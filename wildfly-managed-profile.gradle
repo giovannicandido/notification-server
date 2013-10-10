@@ -1,0 +1,5 @@
+dependencies {
+    testRuntime "org.wildfly:wildfly-arquillian-common:8.0.0.Alpha4"
+    testRuntime "org.wildfly:wildfly-embedded:8.0.0.Alpha4"
+    testRuntime "org.wildfly:wildfly-arquillian-container-managed:8.0.0.Alpha4"
+}

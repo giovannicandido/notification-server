@@ -1,0 +1,6 @@
+/build/
+*.iml
+/.idea/
+/classes
+/.gradle/
+/atlassian-ide-plugin.xml
