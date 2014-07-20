@@ -33,7 +33,8 @@ public class CrudEJB {
     public <T> T find(Class<T> klass, Object id){
        return em.find(klass, id);
     }
-    public void remove(Object entity){
+    public void removeById(Object id, Class klass){
+        Object entity  = em.find(klass, id);
         em.remove(entity);
     }
     public <T> Collection<T> findAll(Class<T> klass){
