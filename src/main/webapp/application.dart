@@ -4,6 +4,8 @@ import 'package:angular/application_factory.dart';
 import 'package:logging/logging.dart';
 import 'package:vader/vader.dart';
 import 'dart:html';
+import 'dart:async';
+import 'dart:convert';
 
 part 'app/AppRouter.dart';
 part 'app/controller/config/email.dart';
@@ -13,6 +15,7 @@ main(){
   // ConfigService Logger
   Logger.root.level = Level.FINEST;
   Logger.root.onRecord.listen((LogRecord r) { print(r.message); });
+  var logger = new Logger("app");
 
   // Start Application
 
@@ -23,8 +26,7 @@ main(){
 
   // Setup HttpInterceptors
 
-  di.get(HttpInterceptors).add(new NotificationHttpInterceptor());
+  di.get(HttpInterceptors).add(new NotificationHttpInterceptor(logger));
 
-  var logger = new Logger("app");
   logger.finest("Application Started");
 }

@@ -17,10 +17,44 @@ part of notification;
  */
 class NotificationHttpInterceptor implements HttpInterceptor {
   VaderHttpInterceptors impl;
-  NotificationHttpInterceptor(){
+  Logger log;
+  NotificationHttpInterceptor(this.log){
     impl = vaderFactory(VaderHttpInterceptors);
   }
   responseError(error) {
+    // verifica se o erro é bad reques (400)
+    // Tenta extrair as informações da requisição
+    var request = error.data;
+    List parameterViolations = [];
+    extractMap(Map map){
+      parameterViolations= map["parameterViolations"];
+
+    }
+
+    if(error.status == 400){
+      if(request is Map){
+        extractMap(request);
+      }
+      if(request is String) {
+        // Tray Json Parse
+        try {
+          var mapRequest = JSON.decode(request);
+          extractMap(mapRequest);
+        }catch(e){
+          log.log(Level.WARNING, "The interceptor could not parse the request, "
+          + "its not a json string: Previous exception $e");
+        }
+
+      }
+      // Houve mensagem de violacoes
+      if(parameterViolations != null && !parameterViolations.isEmpty){
+         String message = "";
+         parameterViolations.forEach((e)=> message += "<b>${e['path'].split(".").last}</b> : ${e["message"]} </br>");
+         Notify notify = vaderFactory(Notify);
+         notify.show("<h1>Verifique os erros a seguir</h1> <br /> $message", title: "Erro ao processar requisição", status: Status.ERROR, delaySeconds: 0);
+      }
+      return new Future.error(error);
+    }
     impl.responseError(error, error.status);
     return new Future.error(error);
   }

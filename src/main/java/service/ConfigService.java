@@ -18,6 +18,7 @@ import entity.Config;
 import model.CrudEJB;
 
 import javax.ejb.EJB;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class ConfigService {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse salvar(EmailConfig config){
+    public RestResponse salvar(@Valid EmailConfig config){
         crud.save(config.convertToConfig());
         return new RestResponse("Salvo com sucesso");
     }

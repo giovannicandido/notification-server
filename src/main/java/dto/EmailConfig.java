@@ -15,6 +15,9 @@ package dto;
 
 import entity.Config;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Classe para armazenamento de configuracoes de email
@@ -24,9 +27,10 @@ import org.hibernate.validator.constraints.NotBlank;
 public class EmailConfig {
     public static final String CONFIG_NAME = "email_config";
     @NotBlank
+    @URL
     private String url;
     private Boolean tls;
-    @NotBlank
+    @NotNull
     private Integer porta;
     @NotBlank
     private String login;
