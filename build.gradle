@@ -39,6 +39,8 @@ dependencies {
     provided 'javax:javaee-api:7.0'
     testCompile group: 'junit', name: 'junit', version: libraryVersions.junit
     testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version: libraryVersions.arquillian
+    provided 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
+    provided 'org.hibernate:hibernate-validator:5.1.1.Final'
 
 }
 
@@ -56,6 +58,7 @@ sourceSets {
 // Configure intellij IDEA classpath for provided scope
 idea {
     module{
+        downloadJavadoc = true
         scopes.PROVIDED.plus += [configurations.provided]
     }
 }

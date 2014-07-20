@@ -29,6 +29,10 @@ packages:
     description: collection
     source: hosted
     version: "0.9.4"
+  css_animation:
+    description: css_animation
+    source: hosted
+    version: "0.1.7"
   di:
     description: di
     source: hosted
@@ -45,6 +49,10 @@ packages:
     description: logging
     source: hosted
     version: "0.9.1+1"
+  observe:
+    description: observe
+    source: hosted
+    version: "0.10.0"
   path:
     description: path
     source: hosted
@@ -53,10 +61,22 @@ packages:
     description: perf_api
     source: hosted
     version: "0.0.8"
+  polymer:
+    description: polymer
+    source: hosted
+    version: "0.10.0-pre.12"
+  polymer_expressions:
+    description: polymer_expressions
+    source: hosted
+    version: "0.10.0"
   route_hierarchical:
     description: route_hierarchical
     source: hosted
     version: "0.4.21"
+  smoke:
+    description: smoke
+    source: hosted
+    version: "0.1.0+1"
   source_maps:
     description: source_maps
     source: hosted
@@ -65,11 +85,26 @@ packages:
     description: stack_trace
     source: hosted
     version: "0.9.3+2"
+  template_binding:
+    description: template_binding
+    source: hosted
+    version: "0.10.0"
   utf:
     description: utf
     source: hosted
     version: "0.9.0"
+  vader:
+    description:
+      ref: develop
+      resolved-ref: a8b21348b55fcbae99b823480cd917fb10278be7
+      url: "git@bitbucket.org:atende/wu-vader.git"
+    source: git
+    version: "0.1.0-dev"
   web_components:
     description: web_components
     source: hosted
     version: "0.3.5+1"
+  yaml:
+    description: yaml
+    source: hosted
+    version: "0.9.0+2"

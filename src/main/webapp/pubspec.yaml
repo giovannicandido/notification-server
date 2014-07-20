@@ -2,3 +2,7 @@ name: 'notification-server'
 dependencies:
   browser: any
   angular: '0.12.0'
+  vader:
+    git:
+      url: git@bitbucket.org:atende/wu-vader.git
+      ref: develop
