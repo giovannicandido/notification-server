@@ -60,6 +60,10 @@ public class TestCrudEJB {
         Config looked = em.find(Config.class, "new");
         Assert.assertNotNull(looked);
     }
+
+    /**
+     * Testa remover
+     */
     @Test
     public void remover(){
         Config conf = new Config();
@@ -71,6 +75,10 @@ public class TestCrudEJB {
         looked = em.find(Config.class, "newc");
         Assert.assertNull(looked);
     }
+
+    /**
+     * Testa procurar
+     */
     @Test
     public void find(){
         Config conf = new Config();
@@ -79,6 +87,10 @@ public class TestCrudEJB {
         Config looked = crudEJB.find(Config.class, "newd");
         Assert.assertNotNull(looked);
     }
+
+    /**
+     * Testa salvar todos
+     */
     @Test
     public void saveAll(){
         Collection c = crudEJB.findAll(Config.class);

@@ -15,7 +15,10 @@ package model;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
 
 /**
@@ -27,17 +30,48 @@ import java.util.Collection;
 public class CrudEJB {
     @PersistenceContext
     private EntityManager em;
+
+    /**
+     * Salvar entidade na base de dados
+     * @param entity
+     */
     public void save(Object entity){
        em.merge(entity);
     }
+
+    /**
+     * Procurar uma classe na base de dados pelo ID
+     * @param klass Classe da Entidade
+     * @param id ID da entidade
+     * @param <T> Entidade a ser retornada
+     * @return Entidade a ser retornada ou null caso não exista
+     */
     public <T> T find(Class<T> klass, Object id){
        return em.find(klass, id);
     }
+
+    /**
+     * Remover uma entidade da base de dados pelo ID
+     * @param id ID da entidade
+     * @param klass Classe da entidade
+     */
     public void removeById(Object id, Class klass){
         Object entity  = em.find(klass, id);
         em.remove(entity);
     }
+
+    /**
+     * Procurar todos os registros de uma entidade
+     * @param klass Entidade a ser procurada
+     * @param <T>
+     * @return Collection de entidades
+     */
     public <T> Collection<T> findAll(Class<T> klass){
-        return new ArrayList<>();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(klass);
+        Root<T> rootEntry = cq.from(klass);
+        CriteriaQuery<T> all = cq.select(rootEntry);
+        TypedQuery<T> allQuery = em.createQuery(all);
+        return allQuery.getResultList();
     }
 }
