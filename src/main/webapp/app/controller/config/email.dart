@@ -16,7 +16,6 @@ class EmailCtl {
     _http.get('/rest/config').then((HttpResponse resp){
       if(resp.data != null){
         config = resp.data['data'][0];
-        window.console.debug(config);
       }
     });
   }
