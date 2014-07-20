@@ -59,6 +59,7 @@ class NotificationHttpInterceptor implements HttpInterceptor {
     return new Future.error(error);
   }
   request(HttpResponseConfig config){
+    dom.querySelector("#loading").querySelector("img").classes.remove('ng-hide');
     impl.processRequest(config.data);
     return config;
   }
@@ -66,6 +67,7 @@ class NotificationHttpInterceptor implements HttpInterceptor {
     return new Future.error(request);
   }
   response(HttpResponse httpResponse){
+    dom.querySelector("#loading").querySelector("img").classes.add('ng-hide');
     impl.processRequest(httpResponse.data);
     return httpResponse;
   }

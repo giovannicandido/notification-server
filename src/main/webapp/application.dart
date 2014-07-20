@@ -3,7 +3,7 @@ import "package:angular/angular.dart";
 import 'package:angular/application_factory.dart';
 import 'package:logging/logging.dart';
 import 'package:vader/vader.dart';
-import 'dart:html';
+import 'dart:html' as dom;
 import 'dart:async';
 import 'dart:convert';
 
