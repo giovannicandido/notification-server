@@ -1,0 +1,4 @@
+name: 'notification-server'
+dependencies:
+  browser: any
+  angular: '0.12.0'
