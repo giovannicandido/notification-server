@@ -32,6 +32,7 @@ import java.util.Collection;
  * Criado por Giovanni Silva <giovanni@atende.info>
  * Date: 7/20/14.
  */
+@SuppressWarnings("unchecked")
 @RunWith(Arquillian.class)
 public class TestCrudEJB {
     @PersistenceContext
