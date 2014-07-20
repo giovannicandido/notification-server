@@ -3,11 +3,11 @@
 <div config-email class="row">
     <div class="columns small-12">
         <form ng-submit="ctrl.salvar()">
-            <label>Servidor</label><input type="text" placeholder="Url Servidor SMTP" ng-model="ctrl.config.url"/>
-            <label>Porta</label><input type="number" name="porta" placeholder="Porta" ng-model="ctrl.config.porta" />
+            <label>Servidor</label><input type="url" required placeholder="Url Servidor SMTP" ng-model="ctrl.config.url"/>
+            <label>Porta</label><input type="number" required name="porta" placeholder="Porta" ng-model="ctrl.config.porta" />
             <label>Usa TLS</label><input type="checkbox" name="tls" ng-model="ctrl.config.tls" /> </br >
-            <label>Login</label><input type="text" name="login" ng-model="ctrl.config.login"/>
-            <label>Senha</label><input type="password" name="senha" ng-model="ctrl.config.password" />
+            <label>Login</label><input type="text" required name="login" ng-model="ctrl.config.login"/>
+            <label>Senha</label><input type="password" required name="senha" ng-model="ctrl.config.password" />
             <button type="submit">Salvar</button>
         </form>
     </div>
