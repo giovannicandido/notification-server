@@ -17,6 +17,7 @@
         <div class="columns medium-6">
             <form ng-submit="ctrl.addApp()">
                 <label>Nome</label> <input maxlength="12" required name="name" type="text" ng-model="ctrl.app.name" />
+                <span class="alert-box info">Deixe a chave em branco para manter mesma chave nas atualizações</span>
                 <label>Key</label> <input name="key" type="password" ng-model="ctrl.app.key" />
                 <label>Confirmar Key</label> <input name="keyConfirm" type="password" ng-model="ctrl.keyConfirm" />
                 <label>Descrição</label> <textarea maxlength="140" ng-model="ctrl.app.description"></textarea>
