@@ -22,6 +22,7 @@ class NotificationHttpInterceptor implements HttpInterceptor {
     impl = vaderFactory(VaderHttpInterceptors);
   }
   responseError(error) {
+    dom.querySelector("#loading").querySelector("img").classes.add('ng-hide');
     // verifica se o erro é bad reques (400)
     // Tenta extrair as informações da requisição
     var request = error.data;
@@ -64,6 +65,7 @@ class NotificationHttpInterceptor implements HttpInterceptor {
     return config;
   }
   requestError(request){
+    dom.querySelector("#loading").querySelector("img").classes.add('ng-hide');
     return new Future.error(request);
   }
   response(HttpResponse httpResponse){

@@ -14,6 +14,10 @@ class AppRouter {
         path: '/status',
         view: 'app/views/status.html'
      ),
+     'apps': ngRoute(
+        path: '/apps',
+        view: 'app/views/apps.html'
+     ),
      'config': ngRoute(
        path: '/config',
        mount: {

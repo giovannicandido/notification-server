@@ -30,6 +30,7 @@ import java.util.ArrayList;
  * Date: 7/20/14.
  */
 @Path("/config")
+@SuppressWarnings("unchecked")
 public class ConfigService {
     @EJB
     private CrudEJB crud;

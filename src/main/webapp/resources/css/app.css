@@ -2,3 +2,6 @@
     display: none!important;
     visibility: hidden;
 }
+tr.current {
+    background-color: #b3ccc9 !important;
+}

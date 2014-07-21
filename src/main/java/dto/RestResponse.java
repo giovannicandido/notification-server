@@ -48,7 +48,11 @@ public class RestResponse {
         this.success = success;
     }
 
+    /**
+     * RestResponse with true success by default
+     */
     public RestResponse() {
+        this.success = true;
     }
 
     public RestResponse(String message, Collection data, Boolean success) {
