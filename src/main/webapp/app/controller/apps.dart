@@ -73,6 +73,7 @@ class AppsCtl {
     }else{
       _http.delete("/rest/application", params: {'id': app['id']}).then((_){
         apps.remove(app);
+        app = {};
       });
     }
   }
