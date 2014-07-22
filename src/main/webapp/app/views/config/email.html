@@ -20,6 +20,11 @@
             </br>
             <button type="submit">Salvar</button>
         </form>
+        <h2>Enviar Email de Teste</h2>
+        <form ng-submit="ctrl.sendTestEmail()">
+            <label>Para</label> <input type="email" required ng-model="ctrl.para" />
+            <button type="submit">Enviar</button>
+        </form>
     </div>
 
 </div>

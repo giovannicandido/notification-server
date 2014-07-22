@@ -19,10 +19,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.ejb.EJB;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -67,6 +64,22 @@ public class NotificationService {
         }else {
             return new RestResponse(INVALID_KEY_MESSAGE, false);
         }
+
+    }
+    @Path("/test-email")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse sendEmailTest(@Email @NotBlank @QueryParam("email") String email){
+        String[] to = {email};
+        String message = "Notification Server Email Test";
+        boolean sended = notification.sendEmail(to, "Email server test", message, MailMimeType.TXT);
+        if(sended){
+            return new RestResponse("Enviado com sucesso");
+        }else{
+            return new RestResponse("Não foi possível enviar o email, um erro ocorreu. " +
+                    "Cheque os logs, se tiver habilitado o debug", false);
+        }
+
 
     }
 
