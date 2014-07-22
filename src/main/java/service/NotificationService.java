@@ -13,7 +13,10 @@
 package service;
 
 import dto.RestResponse;
+import model.MailMimeType;
 import model.NotificationEJB;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.ejb.EJB;
 import javax.ws.rs.FormParam;
@@ -36,12 +39,19 @@ public class NotificationService {
     @Path("/email")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse sendEmail(@FormParam("user") String user,  @FormParam("subject") String subject,
-                                  @FormParam("message") String message,
-                                  @FormParam("application") String application, @FormParam("key") String key
+    public RestResponse sendEmail(@NotBlank @Email @FormParam("email") String email, @NotBlank @FormParam("subject") String subject,
+                                  @NotBlank @FormParam("message") String message,
+                                  @NotBlank @FormParam("application") String application, @NotBlank @FormParam("key") String key
                                   ){
         if(notification.validate(application, key)){
-            return new RestResponse("Email enviado");
+            String[] to = {email};
+            boolean sended = notification.sendEmail(to, subject, message, MailMimeType.TXT);
+            if(sended){
+                return new RestResponse("Email enviado");
+            }else{
+                return new RestResponse("Falha ao enviar email", false);
+            }
+
         }else {
             return new RestResponse(INVALID_KEY_MESSAGE, false);
         }

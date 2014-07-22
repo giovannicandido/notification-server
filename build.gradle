@@ -8,7 +8,7 @@ sourceCompatibility = 1.7
 
 ext {
   libraryVersions = [
-        junit: '4.+', arquillian: '1.1.5.Final',
+        junit: '4.11', arquillian: '1.1.5.Final',
         javaeeApi: '7.0',  slf4j: '1.7.5', log4j: '1.7.5'
 
   ] 
@@ -39,6 +39,7 @@ dependencies {
     provided 'javax:javaee-api:7.0'
     testCompile group: 'junit', name: 'junit', version: libraryVersions.junit
     testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version: libraryVersions.arquillian
+    testCompile 'com.icegreen:greenmail:1.3.1b'
     provided 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
     provided 'org.hibernate:hibernate-validator:5.1.1.Final'
 

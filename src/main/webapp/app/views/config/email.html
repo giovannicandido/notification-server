@@ -3,11 +3,21 @@
 <div config-email class="row">
     <div class="columns small-12">
         <form ng-submit="ctrl.salvar()">
-            <label>Servidor</label><input type="url" required placeholder="Url Servidor SMTP" ng-model="ctrl.config.url"/>
-            <label>Porta</label><input type="number" required name="porta" placeholder="Porta" ng-model="ctrl.config.porta" />
-            <label>Usa TLS</label><input type="checkbox" name="tls" ng-model="ctrl.config.tls" /> </br >
+            <label>Servidor</label><input type="text" required placeholder="Servidor SMTP" ng-model="ctrl.config.host"/>
+            <label>Porta</label><input type="number" required name="port" placeholder="Porta" ng-model="ctrl.config.port" />
+            <label>Enviado Por</label><input type="email" required name="sender" placeholder="Email do a ser reportado de quem enviou" ng-model="ctrl.config.sender" />
+            <label>Protocolo</label>
+             SMTP <input type="radio" name="protocol" ng-model="ctrl.config.protocol" value="SMTP" />
+             SMTPS <input type="radio" name="protocol" ng-model="ctrl.config.protocol" value="SMTPS" />
+             TLS <input type="radio" name="protocol" ng-model="ctrl.config.protocol" value="TLS" />  </br >
+             <label>Necessita autenticação? (usuário, senha)</label> <input type="checkbox" name="needAuth" ng-model="ctrl.config.needAuthentication" checked />  </br >
+
             <label>Login</label><input type="text" required name="login" ng-model="ctrl.config.login"/>
             <label>Senha</label><input type="password" required name="senha" ng-model="ctrl.config.password" />
+
+            <label>Habilitar Debug?</label>
+            <input type="checkbox" name="debug" ng-model="ctrl.config.debug">
+            </br>
             <button type="submit">Salvar</button>
         </form>
     </div>

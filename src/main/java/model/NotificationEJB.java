@@ -12,12 +12,24 @@
 
 package model;
 
+import dto.EmailConfig;
 import entity.Application;
+import entity.Config;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Criado por Giovanni Silva <giovanni@atende.info>
@@ -27,22 +39,131 @@ import javax.persistence.Query;
 public class NotificationEJB {
     @PersistenceContext
     EntityManager em;
+    Logger logger = Logger.getLogger(NotificationEJB.class.getName());
+    private EmailConfig emailConfig = null;
+
+    @PostConstruct
+    public void init() {
+        emailConfig = loadConfig();
+    }
+
     /**
      * Valida se a chave é válida para aplicação
+     *
      * @param application
      * @param key
      * @return
      */
-    public boolean validate(String application, String key){
-        if(application == null || key == null){
+    public boolean validate(String application, String key) {
+        if (application == null || key == null) {
             return false;
         }
         Query q = em.createNamedQuery("Application.findByName").setParameter("name", application);
         Application app = (Application) q.getSingleResult();
-        if(app != null){
+        if (app != null) {
             return app.isKeyValid(key);
-        }else {
+        } else {
             return false;
         }
+    }
+
+    private EmailConfig loadConfig() {
+        Config conf = em.find(Config.class, EmailConfig.CONFIG_NAME);
+        EmailConfig emailConfig = new EmailConfig();
+        if (conf != null) {
+            emailConfig.parseConfig(conf);
+        }
+        return emailConfig;
+    }
+
+    /**
+     * Envia um email para os destinatarios
+     * @param to
+     * @param subject
+     * @param body
+     * @param mailMimeType
+     * @return
+     */
+    public boolean sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) {
+        if(emailConfig ==  null){
+            logger.log(Level.SEVERE, "Servidor de email não está configurado");
+            return false;
+        }
+        Properties props = new Properties();
+        props.put("mail.smtp.host", emailConfig.getHost());
+        props.put("mail.smtp.port", emailConfig.getPort());
+        if (emailConfig.getProtocol() == Protocol.TLS) {
+            props.put("mail.smtp.starttls.enable", "true");
+        }else if(emailConfig.getProtocol() == Protocol.SMTPS){
+            props.put("mail.smtp.ssl.enable", "true");
+        }
+        final String username = emailConfig.getLogin();
+        final String password = emailConfig.getPassword();
+        final String from = emailConfig.getSender();
+        Authenticator authenticator = null;
+        if(emailConfig.getNeedAuthentication()){
+
+            props.put("mail.smtp.auth", "true");
+            authenticator = new Authenticator() {
+                private PasswordAuthentication pa = new PasswordAuthentication(username, password);
+
+                @Override
+                public PasswordAuthentication getPasswordAuthentication() {
+                    return pa;
+                }
+            };
+        }
+
+        Session session = Session.getInstance(props, authenticator);
+        session.setDebug(emailConfig.getDebug());
+        MimeMessage message = new MimeMessage(session);
+        try {
+            message.setFrom(new InternetAddress(from));
+            InternetAddress[] address = new InternetAddress[to.length];
+
+            for (int i = 0; i < to.length; i++) {
+                try {
+                    address[i] = new InternetAddress(to[i]);
+                } catch (Exception e) {
+
+                }
+            }
+            message.setRecipients(Message.RecipientType.TO, address);
+            message.setSubject(subject);
+            message.setSentDate(new Date());
+
+            Multipart multipart = new MimeMultipart("alternative");
+
+            MimeBodyPart bodyPart = new MimeBodyPart();
+
+            switch (mailMimeType){
+                case TXT:
+                    bodyPart.setText(body);
+                    break;
+                case HTML:
+                    bodyPart.setContent(body, "text/html");
+                    break;
+                default:
+                    bodyPart.setText(body);
+
+            }
+
+            multipart.addBodyPart(bodyPart);
+            message.setContent(multipart);
+            Transport.send(message);
+            return true;
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public EmailConfig getEmailConfig() {
+        return emailConfig;
+    }
+
+    public void setEmailConfig(EmailConfig emailConfig) {
+        this.emailConfig = emailConfig;
     }
 }
