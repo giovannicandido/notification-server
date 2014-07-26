@@ -26,6 +26,8 @@ main(){
 
   var module = new Module()
     ..type(RouteInitializerFn, implementedBy: AppRouter)
+    ..factory(NgRoutingUsePushState,
+      (_) => new NgRoutingUsePushState.value(false))
     ..bind(EmailCtl)
     ..bind(AppsCtl);
   Injector di = applicationFactory().addModule(module).run();
