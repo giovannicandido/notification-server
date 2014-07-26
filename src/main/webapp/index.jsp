@@ -44,7 +44,6 @@
                 <a>Configuração</a>
                 <ul class="dropdown">
                     <li><a href="#/config/email">Servidor de Email</a></li>
-                    <li><a href="#/config/auth">Autenticação</a></li>
                 </ul>
 
             </li>
@@ -54,7 +53,6 @@
 
         <!-- Left Nav Section -->
         <ul class="left">
-            <li><a href="#/apps">Applicações</a></li>
             <li><a href="#/graphics">Gráficos</a></li>
             <li><a href="#/status">Status de Serviços</a></li>
         </ul>

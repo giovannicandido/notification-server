@@ -29,7 +29,6 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/notification")
 public class NotificationService {
-    public static final String INVALID_KEY_MESSAGE = "Invalid key or application";
     @EJB
     NotificationEJB notification;
 
@@ -37,32 +36,14 @@ public class NotificationService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public RestResponse sendEmail(@NotBlank @Email @FormParam("email") String email, @NotBlank @FormParam("subject") String subject,
-                                  @NotBlank @FormParam("message") String message,
-                                  @NotBlank @FormParam("application") String application, @NotBlank @FormParam("key") String key
-                                  ){
-        if(notification.validate(application, key)){
-            String[] to = {email};
-            boolean sended = notification.sendEmail(to, subject, message, MailMimeType.TXT);
-            if(sended){
-                return new RestResponse("Email enviado");
-            }else{
-                return new RestResponse("Falha ao enviar email", false);
-            }
-
-        }else {
-            return new RestResponse(INVALID_KEY_MESSAGE, false);
-        }
-    }
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse sendNotification(@FormParam("user") String user, @FormParam("subject") String subject,
-                                         @FormParam("message") String message,
-        @FormParam("application") String application, @FormParam("key") String key
-    ){
-        if(notification.validate(application, key)){
-            return new RestResponse("Notificacao enviada");
-        }else {
-            return new RestResponse(INVALID_KEY_MESSAGE, false);
+                                  @NotBlank @FormParam("message") String message
+    ) {
+        String[] to = {email};
+        boolean sended = notification.sendEmail(to, subject, message, MailMimeType.TXT);
+        if (sended) {
+            return new RestResponse("Email enviado");
+        } else {
+            return new RestResponse("Falha ao enviar email", false);
         }
 
     }

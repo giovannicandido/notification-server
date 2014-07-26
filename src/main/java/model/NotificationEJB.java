@@ -13,7 +13,6 @@
 package model;
 
 import dto.EmailConfig;
-import entity.Application;
 import entity.Config;
 
 import javax.annotation.PostConstruct;
@@ -47,25 +46,6 @@ public class NotificationEJB {
         emailConfig = loadConfig();
     }
 
-    /**
-     * Valida se a chave é válida para aplicação
-     *
-     * @param application
-     * @param key
-     * @return
-     */
-    public boolean validate(String application, String key) {
-        if (application == null || key == null) {
-            return false;
-        }
-        Query q = em.createNamedQuery("Application.findByName").setParameter("name", application);
-        Application app = (Application) q.getSingleResult();
-        if (app != null) {
-            return app.isKeyValid(key);
-        } else {
-            return false;
-        }
-    }
 
     private EmailConfig loadConfig() {
         Config conf = em.find(Config.class, EmailConfig.CONFIG_NAME);
