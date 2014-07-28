@@ -1,5 +1,6 @@
 library notification;
 import "package:angular/angular.dart";
+import "package:angular/animate/module.dart";
 import 'package:angular/application_factory.dart';
 import 'package:logging/logging.dart';
 import 'package:vader/vader.dart';
@@ -24,6 +25,7 @@ main(){
   // Start Application
 
   var module = new Module()
+    ..install(new AnimationModule())
     ..type(RouteInitializerFn, implementedBy: AppRouter)
     ..factory(NgRoutingUsePushState,
       (_) => new NgRoutingUsePushState.value(false))

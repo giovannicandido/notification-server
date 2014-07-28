@@ -9,7 +9,7 @@ class EmailCtl {
   EmailCtl(this._http){
     _loadConfig();
   }
-  var config = {};
+  var config = {'protocol': 'SMTP', 'needAuthentication': true};
   void salvar(){
     _http.post('/rest/config', config);
   }

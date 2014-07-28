@@ -45,6 +45,8 @@ dependencies {
     provided 'org.hibernate:hibernate-validator:5.1.1.Final'
     provided "org.keycloak:keycloak-core:$libraryVersions.keycloak"
     provided "org.keycloak:keycloak-adapter-core:$libraryVersions.keycloak"
+    compile 'commons-beanutils:commons-beanutils:1.9.2'
+
 
 }
 

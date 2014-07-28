@@ -16,6 +16,7 @@ package dto;
 import entity.Config;
 import model.Protocol;
 import org.hibernate.validator.constraints.NotBlank;
+import validations.NotNullIfAnotherFieldHasValue;
 
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
@@ -25,6 +26,16 @@ import java.util.Optional;
  * Criado por Giovanni Silva <giovanni@atende.info>
  *
  */
+@NotNullIfAnotherFieldHasValue.List({
+        @NotNullIfAnotherFieldHasValue(
+                fieldName = "needAuthentication",
+                fieldValue = "true",
+                dependFieldName = "login"),
+        @NotNullIfAnotherFieldHasValue(
+                fieldName = "needAuthentication",
+                fieldValue = "true",
+                dependFieldName = "password")
+})
 public class EmailConfig {
     public static final String CONFIG_NAME = "email_config";
     @NotBlank
@@ -33,9 +44,7 @@ public class EmailConfig {
     private Protocol protocol;
     @NotNull
     private Integer port;
-    @NotBlank
     private String login;
-    @NotBlank
     private String password;
     @NotNull
     private Boolean needAuthentication;
