@@ -35,11 +35,12 @@ public class NotificationService {
     @Path("/email")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse sendEmail(@NotBlank @Email @FormParam("email") String email, @NotBlank @FormParam("subject") String subject,
-                                  @NotBlank @FormParam("message") String message
+    public RestResponse sendEmail(@NotBlank @FormParam("email") String email, @NotBlank @FormParam("subject") String subject,
+                                  @NotBlank @FormParam("message") String message, @FormParam("html") boolean html
     ) {
-        String[] to = {email};
-        boolean sended = notification.sendEmail(to, subject, message, MailMimeType.TXT);
+        String[] to = email.split(";");
+        MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
+        boolean sended = notification.sendEmail(to, subject, message, mailMimeType);
         if (sended) {
             return new RestResponse("Email enviado");
         } else {

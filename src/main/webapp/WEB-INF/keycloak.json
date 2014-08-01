@@ -1,0 +1,10 @@
+{
+    "realm": "apps",
+    "realm-public-key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3FzoikhvIc5+vK8X4N4AxfkDg54FJfEAuOKfksF55noeljCeR2IENKvN228xgqihYJDlU3FkX47VcbIA2xU5txe3OyFJk/M/20SQpbAe7gPd6FO2PUsNDrwUtW8seVHrM5uIiJpz0u7qesOo4N1isZ92RcrkCBDFy3QK7VSL7RwIDAQAB",
+    "auth-server-url": "http://localhost:8080/auth",
+    "ssl-not-required": true,
+    "resource": "notification",
+    "credentials": {
+        "secret": "83f9628d-adfc-42cf-9586-8f99a009731f"
+    }
+}
