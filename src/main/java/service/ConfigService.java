@@ -12,6 +12,7 @@
 
 package service;
 
+import dto.GeralConfig;
 import dto.RestResponse;
 import dto.EmailConfig;
 import entity.Config;
@@ -38,12 +39,14 @@ public class ConfigService {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/email")
     public RestResponse salvar(@Valid EmailConfig config){
         crud.save(config.convertToConfig());
         return new RestResponse("Salvo com sucesso");
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/email")
     public RestResponse getConfig(){
         Config config = crud.find(Config.class, EmailConfig.CONFIG_NAME);
         RestResponse resp = new RestResponse();
@@ -58,4 +61,31 @@ public class ConfigService {
         }
         return resp;
     }
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/geral")
+    public RestResponse salvarGeral(@Valid GeralConfig config){
+        crud.save(config.convertToConfig());
+        return new RestResponse("Salvo com sucesso");
+    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/geral")
+    public RestResponse getGeral(){
+        Config config = crud.find(Config.class, GeralConfig.CONFIG_NAME);
+        GeralConfig geralConfig = new GeralConfig();
+        geralConfig.parseConfig(config);
+        ArrayList data = new ArrayList();
+        RestResponse restResponse = new RestResponse();
+        data.add(geralConfig);
+        if(config != null){
+           restResponse.setData(data);
+           restResponse.setSuccess(true);
+        }else{
+            restResponse.setSuccess(false);
+        }
+        return restResponse;
+    }
+
 }

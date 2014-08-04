@@ -25,8 +25,13 @@ import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,6 +72,14 @@ public class NotificationEJB {
     public boolean sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) {
         if(emailConfig ==  null){
             logger.log(Level.SEVERE, "Servidor de email não está configurado");
+            return false;
+        }
+        // Validar configuracoes de email
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<EmailConfig>> violations = validator.validate(emailConfig);
+        if(violations.size() > 0){
+            logger.log(Level.SEVERE, "Configurações de Email Incorretas ao tentar enviar");
             return false;
         }
         Properties props = new Properties();

@@ -19,7 +19,9 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -28,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  * Date: 7/20/14.
  */
 @Path("/notification")
-public class NotificationService {
+public class NotificationService implements NotificationServiceInterface {
     @EJB
     NotificationEJB notification;
 
@@ -36,7 +38,8 @@ public class NotificationService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public RestResponse sendEmail(@NotBlank @FormParam("email") String email, @NotBlank @FormParam("subject") String subject,
-                                  @NotBlank @FormParam("message") String message, @FormParam("html") boolean html
+                                  @NotBlank @FormParam("message") String message, @FormParam("html") boolean html,
+                                  @Context HttpServletRequest hsr
     ) {
         String[] to = email.split(";");
         MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
@@ -51,7 +54,7 @@ public class NotificationService {
     @Path("/test-email")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse sendEmailTest(@Email @NotBlank @QueryParam("email") String email){
+    public RestResponse sendEmailTest(@Email @NotBlank @QueryParam("email") String email, @Context HttpServletRequest hsr){
         String[] to = {email};
         String message = "Notification Server Email Test";
         boolean sended = notification.sendEmail(to, "Email server test", message, MailMimeType.TXT);

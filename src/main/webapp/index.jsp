@@ -43,6 +43,7 @@
             <li class="has-dropdown">
                 <a>Configuração</a>
                 <ul class="dropdown">
+                    <li><a href="#/config/geral">Geral</a></li>
                     <li><a href="#/config/email">Servidor de Email</a></li>
                 </ul>
 

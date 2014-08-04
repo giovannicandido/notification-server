@@ -10,7 +10,7 @@ ext {
   libraryVersions = [
         junit: '4.11', arquillian: '1.1.5.Final',
         javaeeApi: '7.0',  slf4j: '1.7.5', log4j: '1.7.5',
-        keycloak: '1.0-beta-3'
+        keycloak: '1.0-beta-3', deltaSpike: '1.0.1'
 
   ] 
 }
@@ -46,6 +46,8 @@ dependencies {
     provided "org.keycloak:keycloak-core:$libraryVersions.keycloak"
     provided "org.keycloak:keycloak-adapter-core:$libraryVersions.keycloak"
     compile 'commons-beanutils:commons-beanutils:1.9.2'
+    compile "org.apache.deltaspike.core:deltaspike-core-api:$libraryVersions.deltaSpike"
+    runtime "org.apache.deltaspike.core:deltaspike-core-impl:$libraryVersions.deltaSpike"
 
 
 }

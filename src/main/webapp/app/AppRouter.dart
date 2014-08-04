@@ -20,6 +20,10 @@ class AppRouter {
          'email': ngRoute(
              path: '/email',
              view: '/app/views/config/email.html'
+         ),
+         'geral': ngRoute(
+            path: '/geral',
+            view: '/app/views/config/geral.html'
          )
        })
 

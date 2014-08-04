@@ -11,7 +11,7 @@ class EmailCtl {
   }
   var config = {'protocol': 'SMTP', 'needAuthentication': true};
   void salvar(){
-    _http.post('/rest/config', config);
+    _http.post('/rest/config/email', config);
   }
   sendTestEmail(){
     Notify notify = vaderFactory(Notify);
@@ -23,7 +23,7 @@ class EmailCtl {
     }
   }
   _loadConfig(){
-    _http.get('/rest/config').then((HttpResponse resp){
+    _http.get('/rest/config/email').then((HttpResponse resp){
       if(resp.data != null){
         config = resp.data['data'][0];
       }

@@ -13,7 +13,6 @@
 package dto;
 
 
-import entity.Config;
 import model.Protocol;
 import org.hibernate.validator.constraints.NotBlank;
 import validations.NotNullIfAnotherFieldHasValue;
@@ -36,7 +35,7 @@ import java.util.Optional;
                 fieldValue = "true",
                 dependFieldName = "password")
 })
-public class EmailConfig {
+public class EmailConfig implements Config {
     public static final String CONFIG_NAME = "email_config";
     @NotBlank
     private String host;
@@ -66,8 +65,9 @@ public class EmailConfig {
 
     public EmailConfig() {
     }
-    public Config convertToConfig(){
-       Config conf = new Config();
+    @Override
+    public entity.Config convertToConfig(){
+       entity.Config conf = new entity.Config();
        conf.setConfig(EmailConfig.CONFIG_NAME);
        conf.getValues().put("host", host);
         if(port != null){
@@ -82,7 +82,7 @@ public class EmailConfig {
        conf.getValues().put("debug", (new Boolean(debug)).toString());
        return conf;
     }
-    public EmailConfig(Config conf){
+    public EmailConfig(entity.Config conf){
         parseConfig(conf);
     }
 
@@ -91,7 +91,8 @@ public class EmailConfig {
      * Ao chamar esse método os valores de EmailConfig passarão a conter os valores de Config
      * @param conf
      */
-    public void parseConfig(Config conf){
+    @Override
+    public void parseConfig(entity.Config conf){
         if(!conf.getConfig().equalsIgnoreCase(EmailConfig.CONFIG_NAME)){
             throw new RuntimeException("Config is not an EmailConfig");
         }

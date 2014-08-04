@@ -14,6 +14,7 @@ part 'app/AppRouter.dart';
 
 // Controllers
 part 'app/controller/config/email.dart';
+part 'app/controller/config/geral.dart';
 
 
 main(){
@@ -29,7 +30,8 @@ main(){
     ..type(RouteInitializerFn, implementedBy: AppRouter)
     ..factory(NgRoutingUsePushState,
       (_) => new NgRoutingUsePushState.value(false))
-    ..bind(EmailCtl);
+    ..bind(EmailCtl)
+    ..bind(GeralCtl);
   Injector di = applicationFactory().addModule(module).run();
 
   // Setup HttpInterceptors
