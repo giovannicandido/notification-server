@@ -13,6 +13,7 @@
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import dto.EmailConfig;
+import info.atende.exceptions.EmailNotSendedException;
 import model.MailMimeType;
 import model.NotificationEJB;
 import model.Protocol;
@@ -29,7 +30,7 @@ import javax.mail.internet.MimeMessage;
  */
 public class TestSendEmail {
     @Test
-    public void sendEmail() throws MessagingException {
+    public void sendEmail() throws MessagingException, EmailNotSendedException {
         GreenMail greenMail = new GreenMail();
         greenMail.start();
         NotificationEJB notificationEJB = new NotificationEJB();
@@ -37,8 +38,7 @@ public class TestSendEmail {
                 false);
         notificationEJB.setEmailConfig(emailConfig);
         String to[] = {"giovanni@atende.info","alberto@testdomain.com.br"};
-        boolean sended = notificationEJB.sendEmail(to, "test", "body", MailMimeType.TXT);
-        Assert.assertTrue(sended);
+        notificationEJB.sendEmail(to, "test", "body", MailMimeType.TXT);
         MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
         Assert.assertTrue(GreenMailUtil.getBody(mimeMessage).contains("body"));
         Assert.assertEquals("test", mimeMessage.getSubject());

@@ -13,6 +13,7 @@
 package service;
 
 import dto.RestResponse;
+import info.atende.exceptions.EmailNotSendedException;
 import model.MailMimeType;
 import model.NotificationEJB;
 import org.hibernate.validator.constraints.Email;
@@ -43,30 +44,22 @@ public class NotificationService implements NotificationServiceInterface {
     public RestResponse sendEmail(@NotBlank @FormParam("email") String email, @NotBlank @FormParam("subject") String subject,
                                   @NotBlank @FormParam("message") String message, @FormParam("html") boolean html,
                                   @Context HttpServletRequest hsr
-    ) {
+    ) throws EmailNotSendedException {
         String[] to = email.split(";");
         MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
-        boolean sended = notification.sendEmail(to, subject, message, mailMimeType);
-        if (sended) {
-            return new RestResponse("Email enviado");
-        } else {
-            return new RestResponse("Falha ao enviar email", false);
-        }
+        notification.sendEmail(to, subject, message, mailMimeType);
+        return new RestResponse("Email enviado");
 
     }
     @Path("/test-email")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse sendEmailTest(@Email @NotBlank @QueryParam("email") String email, @Context HttpServletRequest hsr){
+    public RestResponse sendEmailTest(@Email @NotBlank @QueryParam("email") String email, @Context HttpServletRequest hsr) throws EmailNotSendedException {
         String[] to = {email};
         String message = "Notification Server Email Test";
-        boolean sended = notification.sendEmail(to, "Email server test", message, MailMimeType.TXT);
-        if(sended){
-            return new RestResponse("Enviado com sucesso");
-        }else{
-            return new RestResponse("Não foi possível enviar o email, um erro ocorreu. " +
-                    "Cheque os logs, se tiver habilitado o debug", false);
-        }
+        notification.sendEmail(to, "Email server test", message, MailMimeType.TXT);
+        return new RestResponse("Enviado com sucesso");
+
 
 
     }

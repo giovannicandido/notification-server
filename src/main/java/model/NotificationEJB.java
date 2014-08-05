@@ -14,6 +14,8 @@ package model;
 
 import dto.EmailConfig;
 import entity.Config;
+import info.atende.exceptions.ApplicationLogicException;
+import info.atende.exceptions.EmailNotSendedException;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -71,18 +73,16 @@ public class NotificationEJB {
      * @param mailMimeType
      * @return
      */
-    public boolean sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) {
+    public void sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
         if(emailConfig ==  null){
-            logger.log(Level.SEVERE, "Servidor de email não está configurado");
-            return false;
+            throw new EmailNotSendedException("Servidor de email não está configurado");
         }
         // Validar configuracoes de email
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<EmailConfig>> violations = validator.validate(emailConfig);
         if(violations.size() > 0){
-            logger.log(Level.SEVERE, "Configurações de Email Incorretas ao tentar enviar");
-            return false;
+            throw new EmailNotSendedException("Configurações de Email Incorretas ao tentar enviar");
         }
         Properties props = new Properties();
         props.put("mail.smtp.host", emailConfig.getHost());
@@ -120,7 +120,7 @@ public class NotificationEJB {
                 try {
                     address[i] = new InternetAddress(to[i]);
                 } catch (Exception e) {
-
+                   throw new EmailNotSendedException("Endereço de email inválido");
                 }
             }
             message.setRecipients(Message.RecipientType.TO, address);
@@ -146,10 +146,10 @@ public class NotificationEJB {
             multipart.addBodyPart(bodyPart);
             message.setContent(multipart);
             Transport.send(message);
-            return true;
+
         } catch (MessagingException ex) {
-            logger.log(Level.SEVERE, "Não foi possível enviar email: " + ex.getMessage());
-            return false;
+            throw new EmailNotSendedException("Não foi possível enviar email: " + ex.getMessage());
+
         }
 
     }

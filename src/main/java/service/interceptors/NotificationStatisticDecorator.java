@@ -5,6 +5,7 @@ import dto.RestResponse;
 import entity.Config;
 import entity.Statistics;
 import entity.TipoNotificacao;
+import info.atende.exceptions.EmailNotSendedException;
 import model.CrudEJB;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -38,8 +39,7 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
     @Override
     public RestResponse sendEmail(@NotBlank @FormParam("email") String email, @NotBlank @FormParam("subject")
                                   String subject, @NotBlank @FormParam("message") String message, @FormParam("html") boolean html,
-                                  @Context HttpServletRequest hsr)
-                                  {
+                                  @Context HttpServletRequest hsr) throws EmailNotSendedException {
                                       logger.fine("Enviando email para " + email);
                                       Principal userPrincipal = hsr.getUserPrincipal();
                                       RestResponse response = notificationServiceInterface.sendEmail(email, subject, message, html, hsr);;
@@ -58,7 +58,7 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
 
     @Override
     public RestResponse sendEmailTest(@Email @NotBlank String email,
-                                      @Context HttpServletRequest hsr) {
+                                      @Context HttpServletRequest hsr) throws EmailNotSendedException {
         logger.fine("Enviando email de teste para " + email);
         Principal userPrincipal = hsr.getUserPrincipal();
 

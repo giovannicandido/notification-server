@@ -13,7 +13,7 @@ import org.apache.deltaspike.core.api.exception.control.event.ExceptionEvent;
 @ExceptionHandler
 public class LogExceptionHandler {
     void logExceptions(@BeforeHandles ExceptionEvent<Throwable> evt, Logger log) {
-        log.warning("Something bad happened: " + evt.getException().getMessage());
+        log.severe(evt.getException().getMessage());
         evt.handledAndContinue();
     }
 }
