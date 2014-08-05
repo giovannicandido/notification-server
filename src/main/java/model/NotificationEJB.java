@@ -17,6 +17,7 @@ import entity.Config;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -41,9 +42,10 @@ import java.util.logging.Logger;
  */
 @Stateless
 public class NotificationEJB {
+    @Inject
+    Logger logger;
     @PersistenceContext
     EntityManager em;
-    Logger logger = Logger.getLogger(NotificationEJB.class.getName());
     private EmailConfig emailConfig = null;
 
     @PostConstruct
@@ -146,7 +148,7 @@ public class NotificationEJB {
             Transport.send(message);
             return true;
         } catch (MessagingException ex) {
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Não foi possível enviar email: " + ex.getMessage());
             return false;
         }
 
