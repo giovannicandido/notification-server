@@ -8,9 +8,11 @@ import 'dart:html' as dom;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
+import 'package:highcharts4dart/highcharts.dart';
 
 part 'app/http_interceptors.dart';
 part 'app/AppRouter.dart';
+part 'app/controller/graphics.dart';
 
 // Controllers
 part 'app/controller/config/email.dart';
@@ -27,10 +29,12 @@ main(){
 
   var module = new Module()
     ..install(new AnimationModule())
+    ..bind(HighChartComponent)
     ..type(RouteInitializerFn, implementedBy: AppRouter)
     ..factory(NgRoutingUsePushState,
       (_) => new NgRoutingUsePushState.value(false))
     ..bind(EmailCtl)
+    ..bind(GraphicsCtrl)
     ..bind(GeralCtl);
   Injector di = applicationFactory().addModule(module).run();
 

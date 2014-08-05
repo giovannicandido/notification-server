@@ -6,3 +6,6 @@ dependencies:
     git:
       url: git@bitbucket.org:atende/wu-vader.git
       ref: develop
+  highcharts4dart:
+    git:
+      url: https://github.com/giovannicandido/highcharts4dart.git

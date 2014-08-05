@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/resources/css/app.css">
 
     <script src="/packages/vader/web/bower_components/modernizr/modernizr.js"></script>
+    <script src="/packages/highcharts4dart/standalone-framework.src.js"></script>
 </head>
 <body ng-app>
 
@@ -71,5 +72,6 @@
 <script type="application/javascript">
     $(document).foundation();
 </script>
+<script src="packages/highcharts4dart/highcharts.src.js"></script>
 </body>
 </html>

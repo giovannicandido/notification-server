@@ -8,6 +8,11 @@ import java.util.Date;
  * Criado por Giovanni Silva <giovanni@pucminas.br>
  */
 @Entity
+@NamedQueries(
+{
+  @NamedQuery(name = "Statistic.byApplication", query = "SELECT new dto.GraphicCount(c.type, count(c)) FROM Statistics c group by c.type")
+}
+)
 public class Statistics {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
