@@ -1,7 +1,24 @@
 <!DOCTYPE html>
 <h1>Graphics View</h1>
 <div graphics-view>
-    <button ng-click="ctrl.load()">Load Grafico</button>
+    <div class="row">
+        <div class="columns small-6">
+            <button ng-click="ctrl.load()">Load Grafico</button>
+        </div>
+
+        <div class="columns small-6">
+            <label>Applicação</label>
+            <select ng-model="ctrl.app">
+                <option ng-repeat="apps in ctrl.appList" ng-value="apps">
+                    {{apps}}
+                </option>
+
+            </select>
+        </div>
+    </div>
+
+
     <high-chart chart-options="ctrl.chartAplicacao"></high-chart>
     <high-chart chart-options="ctrl.chartTipo"></high-chart>
+    <high-chart chart-options="ctrl.chartAppTime"></high-chart>
 </div>

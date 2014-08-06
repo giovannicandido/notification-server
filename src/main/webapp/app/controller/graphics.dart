@@ -4,6 +4,8 @@ part of notification;
 class GraphicsCtrl {
   Http _http;
   var appData = [];
+  var appList = [];
+  String app;
   GraphicsCtrl(this._http){
     load();
   }
@@ -48,7 +50,19 @@ class GraphicsCtrl {
       }
   });
 
+  var chartAppTime = new HighChart()
+    ..title = (new Title()..text = 'Número de envios por Aplicação vs Tempo')
+    ..chart = (new Chart()
+      ..type = 'line'
+      ..borderColor = '#CCC')
+    ..yAxis = (new YAxis()..title = (new AxisTitle()..text = 'Número de envios')
+  );
+
   load() {
+    // Load Application Combobox
+    _http.get('/rest/graphic/userlist').then((_){
+      this.appList = _.data['data'];
+    });
     _loadInformacao();
   }
   _loadInformacao(){
@@ -81,6 +95,27 @@ class GraphicsCtrl {
           ..data = points
       ];
       chartTipo.series = series;
+    });
+
+    _http.get('/rest/graphic/apptime', params: {'id': app}).then((_){
+      var data = _.data['data'];
+      print(data);
+      List<num> numData = data.map((e){
+        return e['count'];
+      });
+      print(numData);
+      List<String> values = data.map((e){
+        return e['value'];
+      });
+      print(values);
+      var series = [new Series()
+        ..type='line'
+        ..name='App'
+        ..numData = numData
+      ];
+      var xAxis = new XAxis()..categories = values;
+      chartAppTime.xAxis = xAxis;
+      chartAppTime.series = series;
     });
   }
 }
