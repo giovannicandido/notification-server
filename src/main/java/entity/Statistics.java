@@ -10,7 +10,9 @@ import java.util.Date;
 @Entity
 @NamedQueries(
 {
-  @NamedQuery(name = "Statistic.byApplication", query = "SELECT new dto.GraphicCount(c.type, count(c)) FROM Statistics c group by c.type")
+  @NamedQuery(name = "Statistic.byType",
+          query = "SELECT new dto.GraphicCount(c.type, count(c)) FROM Statistics c group by c.type"),
+  @NamedQuery(name = "Statistic.byApplication", query = "SELECT NEW dto.GraphicCount(s.userId, count(s)) FROM Statistics s group by s.userId")
 }
 )
 public class Statistics {

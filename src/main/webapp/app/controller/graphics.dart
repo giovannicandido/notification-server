@@ -4,7 +4,9 @@ part of notification;
 class GraphicsCtrl {
   Http _http;
   var appData = [];
-  GraphicsCtrl(this._http);
+  GraphicsCtrl(this._http){
+    load();
+  }
   var chartAplicacao = new HighChart()
     ..chart = (new Chart()
     ..borderColor = '#CCC'
@@ -47,45 +49,6 @@ class GraphicsCtrl {
   });
 
   load() {
-    var seriesAplicacao = [(new Series ()
-      ..type = 'pie'
-      ..name = 'Aplicações'
-      ..data = [(new Point()
-      ..name = 'App 1'
-      ..y = 24.9), (new Point()
-      ..name = 'App 2'
-      ..y = 8.9), (new Point()
-      ..name = 'App 3'
-      ..y = 59.2
-      ..sliced = true
-      ..moreOptions = {
-        'selected': true
-    }), (new Point ()
-      ..name = 'App 4'
-      ..y = 3.8), (new Point ()
-      ..name = 'App 5'
-      ..y = 1.8), (new Point ()
-      ..name = 'App 6'
-      ..y = 1.4),
-
-    ])];
-    var seriesTipo = [(new Series ()
-      ..type = 'pie'
-      ..name = 'Tipo de Envio'
-      ..data = [(new Point()
-      ..name = 'EMAIL'
-      ..y = 40.0), (new Point()
-      ..name = 'EMAIL TEST'
-      ..y = 30.0), (new Point()
-      ..name = 'WEBSOCKET'
-      ..y = 30.0
-      ..sliced = true
-      ..moreOptions = {
-        'selected': true
-    })
-    ])];
-
-    chartTipo.series = seriesTipo;
     _loadInformacao();
   }
   _loadInformacao(){
@@ -96,14 +59,28 @@ class GraphicsCtrl {
               ..name = e['value']
               .. y = e['count'];
         });
-        print(points);
         var series = [new Series()
           ..type= 'pie'
-          ..name = 'Aplicações'
+          ..name = 'Aplicação'
           ..data = points
 
         ];
        chartAplicacao.series = series;
      });
+
+    _http.get("/rest/graphic/type").then((_){
+      var data = _.data['data'];
+      List<Point> points = data.map((e){
+        return new Point()
+          ..name = e['value']
+          ..y = e['count'];
+      });
+      var series = [new Series()
+        ..type='pie'
+          ..name='Tipo'
+          ..data = points
+      ];
+      chartTipo.series = series;
+    });
   }
 }

@@ -27,4 +27,11 @@ public class GraphicService {
         List<GraphicCount> graphicCounts = em.createNamedQuery("Statistic.byApplication").getResultList();
         return new RestResponse(graphicCounts);
     }
+    @Path("/type")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse notificacoesPorTipo(){
+      List list = em.createNamedQuery("Statistic.byType").getResultList();
+      return new RestResponse(list);
+    }
 }
