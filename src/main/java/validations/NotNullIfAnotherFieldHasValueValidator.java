@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Criado por Giovanni Silva <giovanni@pucminas.br>
  */
+@SuppressWarnings("deprecated")
 public class NotNullIfAnotherFieldHasValueValidator
         implements ConstraintValidator<NotNullIfAnotherFieldHasValue, Object> {
 

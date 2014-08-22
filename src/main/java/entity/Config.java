@@ -13,6 +13,7 @@
 package entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +25,13 @@ import java.util.Map;
 @Entity
 public class Config {
     @Id
+    @Column(length = 100)
+    @Size(max = 100)
     private String config;
     @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name="value")
-    @CollectionTable(name="config_values")
-
+    @MapKeyColumn(name="values_key", length = 100)
+    @Column(name="value", length = 100)
+    @CollectionTable(name="config_values", joinColumns = {@JoinColumn(name="config")})
     private Map<String,String> values = new HashMap<>();
 
     public String getConfig() {

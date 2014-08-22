@@ -21,13 +21,16 @@ import java.util.Date;
   )
 }
 )
+@SequenceGenerator(name = "statistic_seq", sequenceName = "statistic_seq", initialValue = 1, allocationSize = 1)
 public class Statistics {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "statistic_seq")
     private Long Id;
+    @Column(length = 40)
     private String userId;
     @Enumerated(EnumType.STRING)
     private TipoNotificacao type;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date data;
 
     public Statistics() {

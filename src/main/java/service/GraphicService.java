@@ -1,8 +1,6 @@
 package service;
 
-import dto.GraphicCount;
 import dto.RestResponse;
-
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +23,7 @@ public class GraphicService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public RestResponse notificacoesPorAplicacao(){
-        List<GraphicCount> graphicCounts = em.createNamedQuery("Statistic.byApplication").getResultList();
+        List graphicCounts = em.createNamedQuery("Statistic.byApplication").getResultList();
         return new RestResponse(graphicCounts);
     }
     @Path("/type")
