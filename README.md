@@ -13,4 +13,4 @@ To run the tests in wildfly
 ```
 ./gradlew unzipWildfly # Need only once
 ./gradlew test
-
+```
