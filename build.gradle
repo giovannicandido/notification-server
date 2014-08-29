@@ -1,15 +1,23 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'de.undercouch:gradle-download-task:1.0'
+    }
+}
+apply plugin: 'download-task'
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'idea'
-
 version = "1.0-SNAPSHOT"
 
 sourceCompatibility = 1.7
 
 ext {
   libraryVersions = [
-        junit: '4.+', arquillian: '1.1.5.Final',
-        javaeeApi: '7.0',  slf4j: '1.7.5', log4j: '1.7.5'
+        junit: '4.11', arquillian: '1.1.5.Final',
+        slf4j: '1.7.5', log4j: '1.7.5'
 
   ] 
 }
@@ -36,7 +44,7 @@ repositories {
 
 
 dependencies {
-    provided 'javax:javaee-api:7.0'
+    provided 'org.jboss.spec:jboss-javaee-all-7.0:1.0.1.Final'
     testCompile group: 'junit', name: 'junit', version: libraryVersions.junit
     testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version: libraryVersions.arquillian
 
@@ -61,5 +69,5 @@ idea {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.0'
 }
