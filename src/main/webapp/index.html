@@ -1,9 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gradle 1</title>
+    <title>Java EE Skelleton</title>
+    <link rel="stylesheet" href="http://cdn.foundation5.zurb.com/foundation.css" />
 </head>
 <body>
-  <h1>Hello world</h1>
+<div class="row">
+<h1>Java EE Starter Project</h1>
+<hr />
+<p class="alert-box info">
+	Developed in <a href="https://bitbucket.org/atende/javaeeskeleton">https://bitbucket.org/atende/javaeeskeleton</a>, by
+	<a href="http://www.atende.info">Atende Tecnology</a>
+</p>
+<p>
+The best thing about this project, is that you don't need nothing besides the Java SDK to start developing Java Enterprise applications. All dependencies are downloaded including the build software (thanks to gradle wrapper).
+</p><p>
+This project is different from <a href="http://forge.jboss.org">Jboss Forge</a>, this is a static Skeleton that builds from Gradle, Forge is a plugglabe configuration for maven projects. I recommend use Forge if you need easy control over what to setup. 
+</p>
+<p>
+And a recommend this skeleton if you want start quick, and as me, prefer ultimate control and undestand what you do.
+</p>
+<h2>Features</h2>
+<ul>
+<li> Setup Minimal Java EE Project with Gradle </li>
+<li>  Integration Test With Arquillian and profiles</li>
+<li>  Default Integration with Wildfly</li>
+<li>  Download and setup wildfly to run test use task <b>unzipWildfly</b></li>
+<li>  Dependency for UserType to correct save Hibernate Java 8 and JodaTime Date and Time. <a href="http://jadira.sourceforge.net/usertype-userguide.html](http://jadira.sourceforge.net/usertype-userguide.html">http://jadira.sourceforge.net/usertype-userguide.html](http://jadira.sourceforge.net/usertype-userguide.html</a>)</li>
+<li>  Setup a <b>provided</b> dependency configuration for Gradle (there is not a default concept of provided) and configure the classpath for Intellij IDEA</li>
+</ul>
+
+<h2>Usage</h2>
+<p>
+The project came with an example of integration test that runs in the weld container. You just need run it
+</p>
+<code>
+	./gradlew test
+</code>
+<p>
+To run the tests in wildfly. When you project contain more complex tests, like tests that use a database, you probally will need to run in a full Java EE container. The best way is to run in Jboss Wildfly, the gradle build contains a profile to run the tests, all you need is download wildfly <b>8.1.0.Final</b> and unzip in the <b>build</b> directory. Don't worry this automatic made by the <b>gradle task unzipWildfly</b>
+</p>
+
+ <div class='panel'>
+  <pre>
+./gradlew unzipWildfly # Need only once
+./gradlew test -Pprofile=wildfly-managed
+</pre></div>
+<p>
+To setup the default profile so you don't need *-Pprofile* option, edit the build.gradle file. Change the code below
+</p>
+ <div class='panel'>
+  <pre>
+    if(!hasProperty('profile')){
+       apply from: 'wildfly-managed-profile.gradle' # change this line
+    }else{
+       apply from: profile +'-profile.gradle'
+    }
+    </pre>
+</div>
+<p>
+To run in other profile use de command below. The profiles are the files with the suffix <b>-profile.gradle</b>
+</p>
+ <div class='panel'>
+  <pre>
+./gradlew test -Pprofile=glassfish-embedded
+</pre></div>
+</div>
 </body>
 </html>

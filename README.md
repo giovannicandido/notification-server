@@ -1,6 +1,8 @@
 Java EE Starter Project
 ========================
 
+Developed in [https://bitbucket.org/atende/javaeeskeleton](https://bitbucket.org/atende/javaeeskeleton), by [Atende Tecnology](http://www.atende.info)
+
 The best thing about this project, is that you don't need nothing besides the Java SDK to start developing Java Enterprise applications. All dependencies are downloaded including the build software (thanks to gradle wrapper).
 
 This project is different from [Jboss Forge], this is a static Skeleton that builds from Gradle, Forge is a plugglabe configuration for maven projects. I recommend use Forge if you need easy control over what to setup. 
@@ -31,7 +33,7 @@ To run the tests in wildfly. When you project contain more complex tests, like t
 ./gradlew test -Pprofile=wildfly-managed
 ```
 
-To setup de default profile so you don't need *-Pprofile* option, edit the build.gradle file. Change the code below
+To setup the default profile so you don't need *-Pprofile* option, edit the build.gradle file. Change the code below
     
     if(!hasProperty('profile')){
        apply from: 'weld-ee-embedded-profile.gradle' # change this line
