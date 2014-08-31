@@ -47,6 +47,8 @@ dependencies {
     provided 'org.jboss.spec:jboss-javaee-all-7.0:1.0.1.Final'
     testCompile group: 'junit', name: 'junit', version: libraryVersions.junit
     testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version: libraryVersions.arquillian
+    compile 'org.jadira.usertype:usertype.extended:3.2.0.GA'
+
 
 }
 
