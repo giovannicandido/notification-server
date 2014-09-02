@@ -1,6 +1,6 @@
 test {
     systemProperty 'java.util.logging.manager', 'org.jboss.logmanager.LogManager' 
-    systemProperty 'jboss.home', "$buildDir/wildfly-8.1.0.Final"
+    systemProperty 'jboss.home', "$buildDir/wildfly-${wildflyVersion}"
 }
 dependencies {
     testRuntime "org.wildfly:wildfly-arquillian-common:8.1.0.Final"

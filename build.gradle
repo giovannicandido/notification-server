@@ -14,6 +14,8 @@ version = "1.0-SNAPSHOT"
 sourceCompatibility = 1.7
 
 ext {
+  appName = 'Java Enterprise Skeleton'
+  wildflyVersion = '8.1.0.Final' // Used for download and setup widlfly
   libraryVersions = [
         junit: '4.11', arquillian: '1.1.5.Final',
         slf4j: '1.7.5', log4j: '1.7.5'
@@ -37,8 +39,7 @@ configurations {
       compile.extendsFrom provided
   }
 // Javadoc generation customization
-javadoc {
-    appName = 'Java Enterprise Skeleton'
+javadoc {    
     project.configure(options){
         charSet = "UTF-8"
         windowTitle = "$appName"
@@ -70,13 +71,13 @@ task wrapper(type: Wrapper) {
 
 task downloadWildfly << {
   download {
-    src 'http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip'
+    src "http://download.jboss.org/wildfly/${wildflyVersion}/wildfly-${wildflyVersion}.zip"
     overwrite false
     dest buildDir
   }
   
 }
 task unzipWildfly(dependsOn: downloadWildfly, type: Copy){
-  from zipTree("$buildDir/wildfly-8.1.0.Final.zip")
+  from zipTree("$buildDir/wildfly-${wildflyVersion}.zip")
   into buildDir 
 }
