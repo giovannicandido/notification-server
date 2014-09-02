@@ -9,7 +9,6 @@ buildscript {
 apply plugin: 'download-task'
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'idea'
 version = "1.0-SNAPSHOT"
 
 sourceCompatibility = 1.7
@@ -21,19 +20,32 @@ ext {
 
   ] 
 }
-// If profile is set try to apply the profile file, if not, use the wildfly profile
+// If profile is set try to apply the profile file, if not, use the default profile
 if(!hasProperty('profile')){
     apply from: 'weld-ee-embedded-profile.gradle'
 }else{
     apply from: profile +'-profile.gradle'
 }
 
-
-
+// Provided scope configuration
 configurations {
-   provided
+      provided {
+          dependencies.all { dep ->
+              configurations.default.exclude group: dep.group, module: dep.name
+          }
+      }
+      compile.extendsFrom provided
+  }
+// Javadoc generation customization
+javadoc {
+    appName = 'Java Enterprise Skeleton'
+    project.configure(options){
+        charSet = "UTF-8"
+        windowTitle = "$appName"
+        header = "<b>$appName</b>"
+        bottom = "Created by <a href='http://www.atende.info'> Atende Tecnology </a>"
+    }
 }
-
 
 repositories {
     mavenCentral()
@@ -52,24 +64,19 @@ dependencies {
 
 }
 
-// Configure source class path
-sourceSets {
-  main {
-         compileClasspath += [configurations.provided]
-  }
-  test {
-       compileClasspath += [configurations.provided]
-  }
-}
-
-// optional: if using 'idea' plugin
-// Configure intellij IDEA classpath for provided scope
-idea {
-    module{
-        scopes.PROVIDED.plus += [configurations.provided]
-    }
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
+}
+
+task downloadWildfly << {
+  download {
+    src 'http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip'
+    overwrite false
+    dest buildDir
+  }
+  
+}
+task unzipWildfly(dependsOn: downloadWildfly, type: Copy){
+  from zipTree("$buildDir/wildfly-8.1.0.Final.zip")
+  into buildDir 
 }

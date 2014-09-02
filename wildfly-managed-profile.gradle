@@ -7,15 +7,3 @@ dependencies {
     testRuntime "org.wildfly:wildfly-embedded:8.1.0.Final"
     testRuntime 'org.wildfly:wildfly-arquillian-container-embedded:8.1.0.Final'
 }
-task downloadWildfly << {
-	download {
-		src 'http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip'
-		overwrite false
-		dest buildDir
-	}
-	
-}
-task unzipWildfly(dependsOn: downloadWildfly, type: Copy){
-	from zipTree("$buildDir/wildfly-8.1.0.Final.zip")
-	into buildDir	
-}
