@@ -1,0 +1,28 @@
+language: java
+jdk:
+  - oraclejdk8
+
+install:
+  - ./gradlew assemble
+
+before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+
+script:
+  - ./gradlew check
+
+after_script:
+  - for i in wu-*; do cp $i/build/test-results/*.xml shippable/testresults/; done
+  - cp build/reports/cobertura/coverage.xml shippable/codecoverage
+
+before_archive:
+  - rm -rf shippable/testresults
+  - rm -rf shippable/codecoverage
+
+notifications:
+  email:
+    recipients:
+      - giovanni@atende.info
+    on_success: change
+    on_failure: always
