@@ -10,7 +10,7 @@
  * criminal penalties, and will be prosecuted under the maximum extent possible under law.
  */
 
-import entity.Config;
+import info.atende.webutil.jpa.Config;
 import model.CrudEJB;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -46,6 +46,7 @@ public class TestCrudEJB {
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addPackage(Config.class.getPackage())
                 .addClass(CrudEJB.class)
+                .addPackages(true, "org.apache.commons")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
