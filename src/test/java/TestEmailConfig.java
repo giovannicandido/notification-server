@@ -11,7 +11,8 @@
  */
 
 import dto.EmailConfig;
-import entity.Config;
+import info.atende.webutil.jpa.Config;
+import info.atende.webutil.jpa.ConfigUtils;
 import model.Protocol;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class TestEmailConfig {
         EmailConfig emailConfig = new EmailConfig("google.com", Protocol.TLS, 465, "login", "password", true,
                 "no-reply@pucminas.br", true);
 
-        Config convert = emailConfig.convertToConfig();
+        Config convert = ConfigUtils.convertToConfig(emailConfig).get();
         Assert.assertEquals(EmailConfig.CONFIG_NAME, convert.getConfig());
         Assert.assertEquals("google.com", convert.getValues().get("host"));
         Assert.assertEquals("TLS", convert.getValues().get("protocol"));
@@ -55,9 +56,7 @@ public class TestEmailConfig {
         config.getValues().put("debug","true");
         config.getValues().put("port","465");
 
-        EmailConfig converted = new EmailConfig();
-
-        converted.parseConfig(config);
+        EmailConfig converted = ConfigUtils.parseConfig(config, EmailConfig.class).get();
 
         Assert.assertEquals(emailConfig.getHost(), converted.getHost());
         Assert.assertEquals(emailConfig.getProtocol(), converted.getProtocol());
@@ -73,9 +72,8 @@ public class TestEmailConfig {
     public void convertBetweenEmailConfigAndConfig(){
         EmailConfig emailConfig = new EmailConfig("google.com", Protocol.TLS, 465, "login", "password", true,
                 "no-reply@pucminas.br", true);
-
-        EmailConfig converted = new EmailConfig();
-        converted.parseConfig(emailConfig.convertToConfig());
+        Config config = ConfigUtils.convertToConfig(emailConfig).get();
+        EmailConfig converted = ConfigUtils.parseConfig(config, EmailConfig.class).get();
         Assert.assertEquals(converted, emailConfig);
 
     }

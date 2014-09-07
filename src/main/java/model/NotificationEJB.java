@@ -13,9 +13,9 @@
 package model;
 
 import dto.EmailConfig;
-import entity.Config;
-import info.atende.exceptions.ApplicationLogicException;
 import info.atende.exceptions.EmailNotSendedException;
+import info.atende.webutil.jpa.Config;
+import info.atende.webutil.jpa.ConfigUtils;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -27,7 +27,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -35,7 +34,6 @@ import javax.validation.ValidatorFactory;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -58,9 +56,9 @@ public class NotificationEJB {
 
     private EmailConfig loadConfig() {
         Config conf = em.find(Config.class, EmailConfig.CONFIG_NAME);
-        EmailConfig emailConfig = new EmailConfig();
+        EmailConfig emailConfig = null;
         if (conf != null) {
-            emailConfig.parseConfig(conf);
+            emailConfig = ConfigUtils.parseConfig(conf, EmailConfig.class).get();
         }
         return emailConfig;
     }

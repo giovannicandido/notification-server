@@ -2,10 +2,11 @@ package service.interceptors;
 
 import dto.GeralConfig;
 import dto.RestResponse;
-import entity.Config;
 import entity.Statistics;
 import entity.TipoNotificacao;
 import info.atende.exceptions.EmailNotSendedException;
+import info.atende.webutil.jpa.Config;
+import info.atende.webutil.jpa.ConfigUtils;
 import model.CrudEJB;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
 import java.security.Principal;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -80,8 +82,8 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
     private boolean statisticEnabled(){
         Config conf = crudEJB.find(Config.class, GeralConfig.CONFIG_NAME);
         if(conf != null){
-            GeralConfig geral = new GeralConfig(conf);
-            return geral.getHabilitarEstatisticas();
+            Optional<GeralConfig> geral = ConfigUtils.parseConfig(conf, GeralConfig.class);
+            return geral.get().getHabilitarEstatisticas();
         }else{
             return false;
         }

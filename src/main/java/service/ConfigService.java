@@ -12,10 +12,11 @@
 
 package service;
 
+import dto.EmailConfig;
 import dto.GeralConfig;
 import dto.RestResponse;
-import dto.EmailConfig;
-import entity.Config;
+import info.atende.webutil.jpa.Config;
+import info.atende.webutil.jpa.ConfigUtils;
 import model.CrudEJB;
 
 import javax.ejb.EJB;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 /**
@@ -41,7 +43,7 @@ public class ConfigService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/email")
     public RestResponse salvar(@Valid EmailConfig config){
-        crud.save(config.convertToConfig());
+        crud.save(ConfigUtils.convertToConfig(config).get());
         return new RestResponse("Salvo com sucesso");
     }
     @GET
@@ -52,7 +54,10 @@ public class ConfigService {
         RestResponse resp = new RestResponse();
         if(config != null){
             ArrayList data = new ArrayList();
-            data.add(new EmailConfig(config));
+            Optional<EmailConfig> optional = ConfigUtils.parseConfig(config, EmailConfig.class);
+            if(optional.isPresent()){
+                data.add(optional.get());
+            }
             resp.setData(data);
             resp.setSuccess(true);
         }else {
@@ -66,7 +71,7 @@ public class ConfigService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/geral")
     public RestResponse salvarGeral(@Valid GeralConfig config){
-        crud.save(config.convertToConfig());
+        crud.save(ConfigUtils.convertToConfig(config));
         return new RestResponse("Salvo com sucesso");
     }
     @GET
@@ -74,11 +79,13 @@ public class ConfigService {
     @Path("/geral")
     public RestResponse getGeral(){
         Config config = crud.find(Config.class, GeralConfig.CONFIG_NAME);
-        GeralConfig geralConfig = new GeralConfig();
-        geralConfig.parseConfig(config);
+        Optional<GeralConfig> geralConfig = ConfigUtils.parseConfig(config, GeralConfig.class);
         ArrayList data = new ArrayList();
         RestResponse restResponse = new RestResponse();
-        data.add(geralConfig);
+        if(geralConfig.isPresent()){
+
+            data.add(geralConfig.get());
+        }
         if(config != null){
            restResponse.setData(data);
            restResponse.setSuccess(true);

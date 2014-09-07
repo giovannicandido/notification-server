@@ -13,12 +13,12 @@
 package dto;
 
 
+import info.atende.webutil.jpa.ConfigDTO;
 import model.Protocol;
 import org.hibernate.validator.constraints.NotBlank;
 import validations.NotNullIfAnotherFieldHasValue;
 
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 /**
  * Classe para armazenamento de configuracoes de email
@@ -35,7 +35,7 @@ import java.util.Optional;
                 fieldValue = "true",
                 dependFieldName = "password")
 })
-public class EmailConfig implements Config {
+public class EmailConfig implements ConfigDTO {
     public static final String CONFIG_NAME = "email_config";
     @NotBlank
     private String host;
@@ -64,72 +64,6 @@ public class EmailConfig implements Config {
     }
 
     public EmailConfig() {
-    }
-    @Override
-    public entity.Config convertToConfig(){
-       entity.Config conf = new entity.Config();
-       conf.setConfig(EmailConfig.CONFIG_NAME);
-       conf.getValues().put("host", host);
-        if(port != null){
-            conf.getValues().put("port", port.toString());
-        }
-        conf.getValues().put("protocol", protocol.toString());
-
-       conf.getValues().put("login", login);
-       conf.getValues().put("password", password);
-       conf.getValues().put("needAuthentication", needAuthentication.toString());
-       conf.getValues().put("sender", sender);
-       conf.getValues().put("debug", (new Boolean(debug)).toString());
-       return conf;
-    }
-    public EmailConfig(entity.Config conf){
-        parseConfig(conf);
-    }
-
-    /**
-     * Acessa todos os valores de Config e convert para os respectivos valores de EmailConfig
-     * Ao chamar esse método os valores de EmailConfig passarão a conter os valores de Config
-     * @param conf
-     */
-    @Override
-    public void parseConfig(entity.Config conf){
-        if(!conf.getConfig().equalsIgnoreCase(EmailConfig.CONFIG_NAME)){
-            throw new RuntimeException("Config is not an EmailConfig");
-        }
-        this.host = conf.getValues().get("host");
-        Integer porta = null;
-
-        try {
-            porta = Integer.parseInt(conf.getValues().get("port"));
-        }catch(Exception e){
-
-        }
-        try {
-            needAuthentication = Boolean.parseBoolean(conf.getValues().get("needAuthentication"));
-        }catch(Exception e ){
-
-        }
-        Optional<String> option = Optional.ofNullable(conf.getValues().get("protocol"));
-        this.port = porta;
-        this.protocol = option.map((s)->{
-            switch (s){
-                case "TLS":
-                    return Protocol.TLS;
-                case "SMTPS":
-                    return Protocol.SMTPS;
-
-                default: return Protocol.SMTP;
-            }
-        }).orElse(Protocol.SMTP);
-        this.login = conf.getValues().get("login");
-        this.password = conf.getValues().get("password");
-        this.sender = conf.getValues().get("sender");
-
-        try {
-            this.debug = Boolean.parseBoolean(conf.getValues().get("debug"));
-        } catch (Exception e) {
-
-        }
     }
 
     @Override
@@ -227,5 +161,10 @@ public class EmailConfig implements Config {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+
+    @Override
+    public String configName() {
+        return CONFIG_NAME;
     }
 }
