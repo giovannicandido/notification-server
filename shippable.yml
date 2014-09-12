@@ -15,7 +15,7 @@ script:
 
 after_script:
   - cp build/test-results/*.xml shippable/testresults/
-  - cp build/reports/cobertura/coverage.xml shippable/codecoverage
+  - cp build/reports/cobertura/coverage.xml shippable/codecoverage 2>/dev/null || :
 
 before_archive:
   - rm -rf shippable/testresults
