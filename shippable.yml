@@ -3,6 +3,7 @@ jdk:
   - oraclejdk8
 
 install:
+  - ./gradlew unzipWildfly
   - ./gradlew assemble
 
 before_script:
@@ -13,7 +14,7 @@ script:
   - ./gradlew check
 
 after_script:
-  - for i in wu-*; do cp $i/build/test-results/*.xml shippable/testresults/; done
+  - cp build/test-results/*.xml shippable/testresults/
   - cp build/reports/cobertura/coverage.xml shippable/codecoverage
 
 before_archive:
