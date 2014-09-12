@@ -28,7 +28,7 @@ ext {
 }
 // If profile is set try to apply the profile file, if not, use the default profile
 if(!hasProperty('profile')){
-    apply from: 'weld-ee-embedded-profile.gradle'
+    apply from: 'wildfly-managed-profile.gradle'
 }else{
     apply from: profile +'-profile.gradle'
 }
