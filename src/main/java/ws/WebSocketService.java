@@ -1,19 +1,21 @@
 package ws;
 
+import dto.NotificationDTO;
+
 import javax.servlet.http.HttpSession;
-import javax.websocket.EndpointConfig;
-import javax.websocket.OnClose;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
- * Websocket server for users
+ * Websocket server for messages
  * @author Giovanni Silva
  */
+// TODO create encoder and decoder for NotificationDTO  http://mgreau.com/posts/2013/11/11/javaee7-websocket-angularjs-wildfly.html
 @ServerEndpoint(value = "/notification", configurator = HttpSessionConfigurator.class)
 public class WebSocketService {
     static Set<UserSession> peers = Collections.synchronizedSet(new HashSet<UserSession>());
@@ -29,6 +31,21 @@ public class WebSocketService {
     public void close(Session session){
         // remove from quee
         peers.remove(session);
+    }
+
+    public static void sendNotification(String principalName, NotificationDTO notification){
+        Optional<UserSession> userSession = peers.stream().filter(
+                (s) -> principalName.equals(s.wsSession.getUserPrincipal().getName())
+        ).findFirst();
+        if(userSession.isPresent()){
+            try {
+                userSession.get().wsSession.getBasicRemote().sendObject(notification);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (EncodeException e) {
+                e.printStackTrace();
+            }
+        }
     }
     public static class UserSession {
         public Session wsSession;
