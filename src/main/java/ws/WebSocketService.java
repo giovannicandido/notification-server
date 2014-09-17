@@ -30,30 +30,32 @@ public class WebSocketService {
         // remove from quee
         peers.remove(session);
     }
-}
-class UserSession {
-    public Session wsSession;
-    public HttpSession httpSession;
+    public static class UserSession {
+        public Session wsSession;
+        public HttpSession httpSession;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || (o instanceof UserSession && getClass() != o.getClass())) return false;
+            if(o instanceof UserSession){
+                UserSession that = (UserSession) o;
 
-        UserSession that = (UserSession) o;
+                if (!wsSession.equals(that.wsSession)) return false;
+            }else if(o instanceof Session){
+                return wsSession.equals(o);
+            }
+            return false;
+        }
 
-        if (!wsSession.equals(that.wsSession)) return false;
+        @Override
+        public int hashCode() {
+            return wsSession.hashCode();
+        }
 
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return wsSession.hashCode();
-    }
-
-    UserSession(Session wsSession, HttpSession httpSession) {
-        this.wsSession = wsSession;
-        this.httpSession = httpSession;
+        public UserSession(Session wsSession, HttpSession httpSession) {
+            this.wsSession = wsSession;
+            this.httpSession = httpSession;
+        }
     }
 }
