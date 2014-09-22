@@ -12,21 +12,21 @@
 
 package service;
 
+import dto.NotificationDTO;
 import dto.RestResponse;
 import info.atende.exceptions.EmailNotSendedException;
 import model.MailMimeType;
 import model.NotificationEJB;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import ws.WebSocketService;
 
 import javax.ejb.EJB;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ws.rs.core.Response;
 
 /**
  * Servico principal
@@ -62,6 +62,17 @@ public class NotificationService implements NotificationServiceInterface {
 
 
 
+    }
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sendNotification(@FormParam("user") String user, @FormParam("message") String message,
+                                         String messageImageURL, String applicationImageURL){
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setMessageImageURL(messageImageURL);
+        notificationDTO.setApplicationImageURL(applicationImageURL);
+        notificationDTO.setMessage(message);
+        WebSocketService.sendNotification(user, notificationDTO);
+        return Response.ok().build();
     }
 
 }

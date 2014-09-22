@@ -15,8 +15,11 @@ import java.util.Set;
  * Websocket server for messages
  * @author Giovanni Silva
  */
-// TODO create encoder and decoder for NotificationDTO  http://mgreau.com/posts/2013/11/11/javaee7-websocket-angularjs-wildfly.html
-@ServerEndpoint(value = "/notification", configurator = HttpSessionConfigurator.class)
+
+@ServerEndpoint(value = "/notification", configurator = HttpSessionConfigurator.class,
+        encoders = {NotificationEncoder.class},
+        decoders = {NotificationDecoder.class}
+)
 public class WebSocketService {
     static Set<UserSession> peers = Collections.synchronizedSet(new HashSet<UserSession>());
 
@@ -31,6 +34,11 @@ public class WebSocketService {
     public void close(Session session){
         // remove from quee
         peers.remove(session);
+    }
+    // TODO implement the dispose of messages
+    @OnMessage
+    public void messageReceived(final Session session, NotificationDTO notificationDTO){
+        System.out.println("Not implemented yet");
     }
 
     public static void sendNotification(String principalName, NotificationDTO notification){
