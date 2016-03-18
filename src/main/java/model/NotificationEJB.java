@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 
 /**
  * Criado por Giovanni Silva <giovanni@atende.info>
- * Date: 7/20/14.
  */
 @Stateless
 public class NotificationEJB {

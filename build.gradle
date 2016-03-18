@@ -18,11 +18,11 @@ sourceCompatibility = 1.8
 
 ext {
   appName = 'Notification Server'
-  wildflyVersion = '8.1.0.Final' // Used for download and setup widlfly
+  wildflyVersion = '10.0.0.Final' // Used for download and setup widlfly
   libraryVersions = [
         junit: '4.11', arquillian: '1.1.5.Final',
         slf4j: '1.7.5', log4j: '1.7.5',
-        keycloak: '1.0-rc-1', deltaSpike: '1.0.1'
+        keycloak: '1.9.1.Final', deltaSpike: '1.5.2'
 
   ] 
 }
@@ -33,15 +33,7 @@ if(!hasProperty('profile')){
     apply from: profile +'-profile.gradle'
 }
 
-// Provided scope configuration
-configurations {
-      provided {
-          dependencies.all { dep ->
-              configurations.default.exclude group: dep.group, module: dep.name
-          }
-      }
-      compile.extendsFrom provided
-  }
+// compileOnly scope configuration
 // Javadoc generation customization
 javadoc {    
     project.configure(options){
@@ -64,24 +56,24 @@ repositories {
 
 
 dependencies {
-    provided 'org.jboss.spec:jboss-javaee-all-7.0:1.0.1.Final'
+    compileOnly 'org.jboss.spec:jboss-javaee-all-7.0:1.0.3.Final'
     testCompile group: 'junit', name: 'junit', version: libraryVersions.junit
     testCompile group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version: libraryVersions.arquillian
     testCompile 'com.icegreen:greenmail:1.3.1b'
-    provided 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
-    provided 'org.hibernate:hibernate-validator:5.1.1.Final'
-    provided "org.keycloak:keycloak-core:$libraryVersions.keycloak"
-    provided "org.keycloak:keycloak-adapter-core:$libraryVersions.keycloak"
+    compileOnly 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
+    compileOnly 'org.hibernate:hibernate-validator:5.2.4.Final'
+    compileOnly "org.keycloak:keycloak-core:$libraryVersions.keycloak"
+    compileOnly "org.keycloak:keycloak-adapter-core:$libraryVersions.keycloak"
     compile 'commons-beanutils:commons-beanutils:1.9.2'
     compile "org.apache.deltaspike.core:deltaspike-core-api:$libraryVersions.deltaSpike"
     runtime "org.apache.deltaspike.core:deltaspike-core-impl:$libraryVersions.deltaSpike"
-    compile "org.flywaydb:flyway-core:3.0"
-    compile group: 'info.atende.webutil', name: 'wu-jpa', version: '0.1.0-SNAPSHOT', changing: true
+    compile "org.flywaydb:flyway-core:3.2.1"
+    compile group: 'info.atende.webutil', name: 'wu-jpa', version: '0.1.0'
 //    compile 'org.jadira.usertype:usertype.extended:3.2.0.GA'
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+    gradleVersion = '2.12'
 }
 
 task downloadWildfly << {
