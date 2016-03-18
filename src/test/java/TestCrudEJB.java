@@ -10,17 +10,12 @@
  * criminal penalties, and will be prosecuted under the maximum extent possible under law.
  */
 
-import info.atende.webutil.jpa.Config;
 import info.atende.nserver.model.CrudEJB;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
+import info.atende.webutil.jpa.Config;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
@@ -33,23 +28,13 @@ import java.util.Collection;
  * Date: 7/20/14.
  */
 @SuppressWarnings("unchecked")
-@RunWith(Arquillian.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestCrudEJB {
     @PersistenceContext
     EntityManager em;
 
     @EJB
     CrudEJB crudEJB;
-
-    @Deployment
-    public static Archive<?> createDeployment() {
-        return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addPackage(Config.class.getPackage())
-                .addClass(CrudEJB.class)
-                .addPackages(true, "org.apache.commons")
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
-    }
 
     /**
      * Testa se o metodo salvar salva na base de dados

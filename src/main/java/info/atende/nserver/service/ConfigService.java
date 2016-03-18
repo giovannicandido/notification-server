@@ -15,14 +15,15 @@ package info.atende.nserver.service;
 import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.dto.GeralConfig;
 import info.atende.nserver.dto.RestResponse;
+import info.atende.nserver.model.CrudEJB;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
-import info.atende.nserver.model.CrudEJB;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ejb.EJB;
 import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -32,23 +33,19 @@ import java.util.Optional;
  * Criado por Giovanni Silva <giovanni@atende.info>
  * Date: 7/20/14.
  */
-@Path("/info/atende/nserver/config")
+@RestController
+@RequestMapping("/config")
 @SuppressWarnings("unchecked")
 public class ConfigService {
-    @EJB
+    @Autowired
     private CrudEJB crud;
 
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/email")
+    @RequestMapping(value = "/email", method = RequestMethod.POST)
     public RestResponse salvar(@Valid EmailConfig config){
         crud.save(ConfigUtils.convertToConfig(config).get());
         return new RestResponse("Salvo com sucesso");
     }
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/email")
+    @RequestMapping(value = "/email", method = RequestMethod.GET)
     public RestResponse getConfig(){
         Config config = crud.find(Config.class, EmailConfig.CONFIG_NAME);
         RestResponse resp = new RestResponse();
@@ -66,17 +63,12 @@ public class ConfigService {
         }
         return resp;
     }
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/geral")
+    @RequestMapping(value = "/geral", method = RequestMethod.POST)
     public RestResponse salvarGeral(@Valid GeralConfig config){
         crud.save(ConfigUtils.convertToConfig(config));
         return new RestResponse("Salvo com sucesso");
     }
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/geral")
+    @RequestMapping(value = "/geral", method = RequestMethod.POST)
     public RestResponse getGeral(){
         Config config = crud.find(Config.class, GeralConfig.CONFIG_NAME);
         Optional<GeralConfig> geralConfig = ConfigUtils.parseConfig(config, GeralConfig.class);

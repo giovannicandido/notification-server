@@ -12,14 +12,13 @@
 
 package info.atende.nserver.model;
 
+import info.atende.nserver.config.logging.Logging;
 import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -34,14 +33,15 @@ import javax.validation.ValidatorFactory;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.springframework.stereotype.Component;
 
 /**
  * Criado por Giovanni Silva <giovanni@atende.info>
  */
-@Stateless
+@Component
 public class NotificationEJB {
-    @Inject
+    @Logging
     Logger logger;
     @PersistenceContext
     EntityManager em;

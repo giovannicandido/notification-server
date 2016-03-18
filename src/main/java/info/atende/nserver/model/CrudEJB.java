@@ -12,7 +12,9 @@
 
 package info.atende.nserver.model;
 
-import javax.ejb.Stateless;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -26,8 +28,9 @@ import java.util.Collection;
  * Criado por Giovanni Silva <giovanni@atende.info>
  * Date: 7/20/14.
  */
+@Component
+@Transactional
 @SuppressWarnings("unchecked")
-@Stateless
 public class CrudEJB {
     @PersistenceContext
     private EntityManager em;

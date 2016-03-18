@@ -18,29 +18,27 @@ import info.atende.nserver.model.MailMimeType;
 import info.atende.nserver.model.NotificationEJB;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 
 /**
  * Servico principal
  * Criado por Giovanni Silva <giovanni@atende.info>
  * Date: 7/20/14.
  */
-@Path("/notification")
+@RestController
+@RequestMapping("/notification")
 public class NotificationService implements NotificationServiceInterface {
-    @EJB
+    @Autowired
     NotificationEJB notification;
 
-    @Path("/email")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse sendEmail(@NotBlank @FormParam("email") String email, @NotBlank @FormParam("subject") String subject,
-                                  @NotBlank @FormParam("message") String message, @FormParam("html") boolean html,
-                                  @Context HttpServletRequest hsr
+    @RequestMapping(value = "/email", method = RequestMethod.POST)
+    public RestResponse sendEmail(@NotBlank  String email, @NotBlank  String subject,
+                                  @NotBlank  String message,  boolean html, HttpServletRequest hsr
     ) throws EmailNotSendedException {
         String[] to = email.split(";");
         MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
@@ -48,16 +46,12 @@ public class NotificationService implements NotificationServiceInterface {
         return new RestResponse("Email enviado");
 
     }
-    @Path("/test-email")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse sendEmailTest(@Email @NotBlank @QueryParam("email") String email, @Context HttpServletRequest hsr) throws EmailNotSendedException {
+    @RequestMapping(value = "/test-email", method = RequestMethod.POST)
+    public RestResponse sendEmailTest(@Email @NotBlank String email, HttpServletRequest hsr) throws EmailNotSendedException {
         String[] to = {email};
         String message = "Notification Server Email Test";
         notification.sendEmail(to, "Email server test", message, MailMimeType.TXT);
         return new RestResponse("Enviado com sucesso");
-
-
 
     }
 
