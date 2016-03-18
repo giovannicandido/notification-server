@@ -11,7 +11,7 @@
  */
 
 import info.atende.webutil.jpa.Config;
-import model.CrudEJB;
+import info.atende.nserver.model.CrudEJB;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;

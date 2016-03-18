@@ -3,6 +3,6 @@
        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
        version="1.1" bean-discovery-mode="all">
     <decorators>
-        <class>service.interceptors.NotificationStatisticDecorator</class>
+        <class>info.atende.nserver.service.interceptors.NotificationStatisticDecorator</class>
     </decorators>
 </beans>

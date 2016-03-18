@@ -10,10 +10,10 @@
  * criminal penalties, and will be prosecuted under the maximum extent possible under law.
  */
 
-import dto.EmailConfig;
+import info.atende.nserver.dto.EmailConfig;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
-import model.Protocol;
+import info.atende.nserver.model.Protocol;
 import org.junit.Assert;
 import org.junit.Test;
 

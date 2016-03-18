@@ -12,11 +12,11 @@
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
-import dto.EmailConfig;
-import info.atende.exceptions.EmailNotSendedException;
-import model.MailMimeType;
-import model.NotificationEJB;
-import model.Protocol;
+import info.atende.nserver.dto.EmailConfig;
+import info.atende.nserver.exceptions.EmailNotSendedException;
+import info.atende.nserver.model.MailMimeType;
+import info.atende.nserver.model.NotificationEJB;
+import info.atende.nserver.model.Protocol;
 import org.junit.Assert;
 import org.junit.Test;
 
