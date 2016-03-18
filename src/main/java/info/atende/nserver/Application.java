@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -31,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
-@EnableAutoConfiguration
 @EntityScan(basePackages = {"info.atende.webutil.jpa"})
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -81,7 +79,7 @@ public class Application {
         if (!source.containsProperty("spring.profiles.active") &&
                 !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
 
-            app.setAdditionalProfiles(Constants.SPRING_PROFILE_PRODUCTION);
+            app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }
     }
 }

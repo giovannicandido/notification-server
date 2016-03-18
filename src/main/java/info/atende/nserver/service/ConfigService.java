@@ -68,7 +68,7 @@ public class ConfigService {
         crud.save(ConfigUtils.convertToConfig(config));
         return new RestResponse("Salvo com sucesso");
     }
-    @RequestMapping(value = "/geral", method = RequestMethod.POST)
+    @RequestMapping(value = "/geral", method = RequestMethod.GET)
     public RestResponse getGeral(){
         Config config = crud.find(Config.class, GeralConfig.CONFIG_NAME);
         Optional<GeralConfig> geralConfig = ConfigUtils.parseConfig(config, GeralConfig.class);

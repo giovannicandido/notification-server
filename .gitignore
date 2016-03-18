@@ -4,3 +4,4 @@
 /classes
 /.gradle/
 /atlassian-ide-plugin.xml
+src/main/resources/application-dev.properties

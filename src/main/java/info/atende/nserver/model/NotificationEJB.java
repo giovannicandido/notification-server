@@ -17,6 +17,8 @@ import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
+import org.slf4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.mail.*;
@@ -33,18 +35,18 @@ import javax.validation.ValidatorFactory;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  * Criado por Giovanni Silva <giovanni@atende.info>
  */
-@Component
+@Repository
 public class NotificationEJB {
     @Logging
     Logger logger;
+
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
+
     private EmailConfig emailConfig = null;
 
     @PostConstruct

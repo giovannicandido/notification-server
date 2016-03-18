@@ -56,6 +56,7 @@ repositories {
         compile('org.springframework.boot:spring-boot-starter-web')
 
         runtime('org.postgresql:postgresql')
+        compile('com.zaxxer:HikariCP:2.4.4')
         compile group: 'info.atende.webutil', name: 'wu-jpa', version: '0.1.0'
         compile "org.flywaydb:flyway-core:3.2.1"
         //compileOnly "org.keycloak:keycloak-core:$libraryVersions.keycloak"

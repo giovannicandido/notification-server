@@ -10,7 +10,7 @@
  * criminal penalties, and will be prosecuted under the maximum extent possible under law.
  */
 
-package info.atende.nserver.config.ws;
+package info.atende.nserver.service.ws;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
