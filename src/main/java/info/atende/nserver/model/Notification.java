@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import javax.mail.Message;
@@ -50,6 +51,7 @@ public class Notification {
      * @param mailMimeType
      * @return
      */
+    @Async
     public void sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
         MimeMessage message = mailSender.createMimeMessage();
         try {
