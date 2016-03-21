@@ -1,34 +1,64 @@
 Notification Server Project
 ============================
 [![Build Status](https://api.shippable.com/projects/540e84d43479c5ea8f9f0513/badge?branchName=master)](https://app.shippable.com/projects/540e84d43479c5ea8f9f0513/builds/latest)
-O projeto faz parte da arquitetura de desenvolvimento principal da empresa.
+
+This project is part of a central architecture when several applications should send email, and use this as a service.
+
 [Documentação](http://wiki.atende.info/display/wa)
 
-## Usage
+## Technology
 
-The project came with an example of integration test that runs in the weld container. You just need run it
+* Spring Boot
+* PostgreSQL Database
+
+## Configuration of email
+
+Use this configuration on file. In production this can be override by ENV variables ou command line. See [Spring Boot Config]
+
+    mail.from=no-reply@test.com
+    spring.mail.host=localhost
+    spring.mail.port=3025
+    spring.mail.protocol=smtp
+
+Gmail Example:
+
+    spring.mail.host = smtp.gmail.com
+    spring.mail.username = *****@gmail.com
+    spring.mail.password = ****
+    spring.mail.properties.mail.smtp.auth = true
+    spring.mail.properties.mail.smtp.socketFactory.port = 465
+    spring.mail.properties.mail.smtp.socketFactory.class = javax.net.ssl.SSLSocketFactory
+    spring.mail.properties.mail.smtp.socketFactory.fallback = false
+
+
+## Usage from a dev perspective
+
+The application is preconfigured to use the credentials on *dev* and *test* spring profiles:
+
+| User  | Password | Host         |
+|-------|----------| ------------ |
+| super | 1234     | docker.local |
+|       |          |              |
+
+The **dev** profile is the default when running the application, it changes to test when running on tests because
+of `@SpringTestProfile` annotation
+
+**dev** connects to a **notification** database and **test** connect to a **notification_test** database
+
+Using docker and docker compose you can bring that to life:
+
+    docker-compose up
+
+Alter your **/etc/hosts** file pointing to the real docker ip. If you are on linux point to *127.0.0.1* if you
+use **docker-machine** point to `docker-machine ip default` # default is the name of machine
+
+
+    sudo echo "127.0.0.1 docker.local" >> /etc/hosts
+
+## Running Tests
 
 ```
 ./gradlew test
 ```
 
-To run the tests in wildfly. When you project contain more complex tests, like tests that use a database, you probally will need to run in a full Java EE container. The best way is to run in Jboss Wildfly, the gradle build contains a profile to run the tests, all you need is download wildfly **8.1.0.Final** and unzip in the **build** directory. Don't worry this automatic made by the __gradle task unzipWildfly__
-
-```
-./gradlew unzipWildfly # Need only once
-./gradlew test -Pprofile=wildfly-managed
-```
-
-To setup the default profile so you don't need *-Pprofile* option, edit the build.gradle file. Change the code below
-    
-    if(!hasProperty('profile')){
-       apply from: 'weld-ee-embedded-profile.gradle' # change this line
-    }else{
-       apply from: profile +'-profile.gradle'
-    }
-
-To run in other profile use de command below. The profiles are the files with the suffix **-profile.gradle**
-
-```
-./gradlew test -Pprofile=glassfish-embedded
-```
+[Spring Boot Config]:https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html

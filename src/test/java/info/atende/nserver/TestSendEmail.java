@@ -17,8 +17,11 @@ import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.nserver.model.MailMimeType;
 import info.atende.nserver.model.Notification;
 import info.atende.nserver.model.Protocol;
-import org.junit.Assert;
-import org.junit.Test;
+import info.atende.nserver.test.annotations.SpringIntegrationTest;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -28,15 +31,26 @@ import javax.mail.internet.MimeMessage;
  * Criado por Giovanni Silva <giovanni@atende.info>
  * Date: 7/22/14.
  */
+@SpringIntegrationTest
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestSendEmail {
+    @Autowired
+    private Notification notification;
+    private static GreenMail greenMail;
+
+    @BeforeClass
+    public static void init(){
+        greenMail = new GreenMail();
+        greenMail.start();
+    }
+    @AfterClass
+    public static void shutdown(){
+        greenMail.stop();
+    }
+
     @Test
     public void sendEmail() throws MessagingException, EmailNotSendedException {
-        GreenMail greenMail = new GreenMail();
-        greenMail.start();
-        Notification notification = new Notification();
-        EmailConfig emailConfig = new EmailConfig("localhost", Protocol.SMTP, 3025, "", "", false, "no-reply@test.com",
-                false);
-        notification.setEmailConfig(emailConfig);
+
         String to[] = {"giovanni@atende.info","alberto@testdomain.com.br"};
         notification.sendEmail(to, "test", "body", MailMimeType.TXT);
         MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
@@ -45,7 +59,7 @@ public class TestSendEmail {
         Assert.assertEquals("no-reply@test.com", mimeMessage.getFrom()[0].toString());
         Assert.assertEquals("giovanni@atende.info", mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString());
         Assert.assertEquals("alberto@testdomain.com.br", mimeMessage.getRecipients(Message.RecipientType.TO)[1].toString());
-        greenMail.stop();
+
 
     }
 }
