@@ -12,13 +12,14 @@ package info.atende.nserver;/*
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
-import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.nserver.model.MailMimeType;
 import info.atende.nserver.model.Notification;
-import info.atende.nserver.model.Protocol;
 import info.atende.nserver.test.annotations.SpringIntegrationTest;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

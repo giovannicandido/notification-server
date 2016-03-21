@@ -13,10 +13,10 @@
 package info.atende.nserver.dto;
 
 
-import info.atende.webutil.jpa.ConfigDTO;
 import info.atende.nserver.model.Protocol;
-import org.hibernate.validator.constraints.NotBlank;
 import info.atende.nserver.validations.NotNullIfAnotherFieldHasValue;
+import info.atende.webutil.jpa.ConfigDTO;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
