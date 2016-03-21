@@ -15,7 +15,7 @@ package info.atende.nserver.service;
 import info.atende.nserver.dto.RestResponse;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.nserver.model.MailMimeType;
-import info.atende.nserver.model.NotificationEJB;
+import info.atende.nserver.model.Notification;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/notification")
 public class NotificationService implements NotificationServiceInterface {
     @Autowired
-    NotificationEJB notification;
+    Notification notification;
 
     @RequestMapping(value = "/email", method = RequestMethod.POST)
     public RestResponse sendEmail(@NotBlank  String email, @NotBlank  String subject,

@@ -15,7 +15,7 @@ import com.icegreen.greenmail.util.GreenMailUtil;
 import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.nserver.model.MailMimeType;
-import info.atende.nserver.model.NotificationEJB;
+import info.atende.nserver.model.Notification;
 import info.atende.nserver.model.Protocol;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,12 +33,12 @@ public class TestSendEmail {
     public void sendEmail() throws MessagingException, EmailNotSendedException {
         GreenMail greenMail = new GreenMail();
         greenMail.start();
-        NotificationEJB notificationEJB = new NotificationEJB();
+        Notification notification = new Notification();
         EmailConfig emailConfig = new EmailConfig("localhost", Protocol.SMTP, 3025, "", "", false, "no-reply@test.com",
                 false);
-        notificationEJB.setEmailConfig(emailConfig);
+        notification.setEmailConfig(emailConfig);
         String to[] = {"giovanni@atende.info","alberto@testdomain.com.br"};
-        notificationEJB.sendEmail(to, "test", "body", MailMimeType.TXT);
+        notification.sendEmail(to, "test", "body", MailMimeType.TXT);
         MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
         Assert.assertTrue(GreenMailUtil.getBody(mimeMessage).contains("body"));
         Assert.assertEquals("test", mimeMessage.getSubject());

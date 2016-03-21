@@ -40,7 +40,7 @@ import java.util.Set;
  * Criado por Giovanni Silva <giovanni@atende.info>
  */
 @Repository
-public class NotificationEJB {
+public class Notification {
     @Logging
     Logger logger;
 
