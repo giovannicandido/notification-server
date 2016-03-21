@@ -1,7 +1,6 @@
 package info.atende.nserver.test.annotations;
 
 import info.atende.nserver.Application;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.web.WebAppConfiguration;
