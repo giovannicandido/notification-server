@@ -13,28 +13,21 @@
 package info.atende.nserver.model;
 
 import info.atende.nserver.config.logging.Logging;
-import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.exceptions.EmailNotSendedException;
-import info.atende.webutil.jpa.Config;
-import info.atende.webutil.jpa.ConfigUtils;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import javax.mail.*;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.Date;
-import java.util.Properties;
-import java.util.Set;
 
 /**
  * Criado por Giovanni Silva <giovanni@atende.info>
@@ -44,25 +37,10 @@ public class Notification {
     @Logging
     Logger logger;
 
-    @PersistenceContext
-    private EntityManager em;
-
-    private EmailConfig emailConfig = null;
-
-    @PostConstruct
-    public void init() {
-        emailConfig = loadConfig();
-    }
-
-
-    private EmailConfig loadConfig() {
-        Config conf = em.find(Config.class, EmailConfig.CONFIG_NAME);
-        EmailConfig emailConfig = null;
-        if (conf != null) {
-            emailConfig = ConfigUtils.parseConfig(conf, EmailConfig.class).get();
-        }
-        return emailConfig;
-    }
+    @Autowired
+    private JavaMailSender mailSender;
+    @Value("${mail.from}")
+    private String from;
 
     /**
      * Envia um email para os destinatarios
@@ -73,44 +51,7 @@ public class Notification {
      * @return
      */
     public void sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
-        if(emailConfig ==  null){
-            throw new EmailNotSendedException("Servidor de email não está configurado");
-        }
-        // Validar configuracoes de email
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-        Set<ConstraintViolation<EmailConfig>> violations = validator.validate(emailConfig);
-        if(violations.size() > 0){
-            throw new EmailNotSendedException("Configurações de Email Incorretas ao tentar enviar");
-        }
-        Properties props = new Properties();
-        props.put("mail.smtp.host", emailConfig.getHost());
-        props.put("mail.smtp.port", emailConfig.getPort());
-        if (emailConfig.getProtocol() == Protocol.TLS) {
-            props.put("mail.smtp.starttls.enable", "true");
-        }else if(emailConfig.getProtocol() == Protocol.SMTPS){
-            props.put("mail.smtp.ssl.enable", "true");
-        }
-        final String username = emailConfig.getLogin();
-        final String password = emailConfig.getPassword();
-        final String from = emailConfig.getSender();
-        Authenticator authenticator = null;
-        if(emailConfig.getNeedAuthentication()){
-
-            props.put("mail.smtp.auth", "true");
-            authenticator = new Authenticator() {
-                private PasswordAuthentication pa = new PasswordAuthentication(username, password);
-
-                @Override
-                public PasswordAuthentication getPasswordAuthentication() {
-                    return pa;
-                }
-            };
-        }
-
-        Session session = Session.getInstance(props, authenticator);
-        session.setDebug(emailConfig.getDebug());
-        MimeMessage message = new MimeMessage(session);
+        MimeMessage message = mailSender.createMimeMessage();
         try {
             message.setFrom(new InternetAddress(from));
             InternetAddress[] address = new InternetAddress[to.length];
@@ -144,20 +85,12 @@ public class Notification {
 
             multipart.addBodyPart(bodyPart);
             message.setContent(multipart);
-            Transport.send(message);
+            mailSender.send(message);
 
         } catch (MessagingException ex) {
             throw new EmailNotSendedException("Não foi possível enviar email: " + ex.getMessage());
 
         }
 
-    }
-
-    public EmailConfig getEmailConfig() {
-        return emailConfig;
-    }
-
-    public void setEmailConfig(EmailConfig emailConfig) {
-        this.emailConfig = emailConfig;
     }
 }

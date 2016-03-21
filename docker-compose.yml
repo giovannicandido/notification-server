@@ -1,0 +1,10 @@
+version: '2.0'
+services:
+  db:
+    build: ./images/postgresql
+    environment:
+      - POSTGRES_USER=super
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=notification
+    ports:
+      - "5432:5432"
