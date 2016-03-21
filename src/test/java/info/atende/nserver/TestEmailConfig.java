@@ -1,4 +1,4 @@
-/*
+package info.atende.nserver;/*
  * Copyright (c) 2014. Atende Tecnologia da Informação e Prestação de Serviços.
  *
  * Aviso. Este software está protegido por leis de direitos autorais e tratados internacionais.

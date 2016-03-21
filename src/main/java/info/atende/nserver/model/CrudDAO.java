@@ -31,7 +31,7 @@ import java.util.Collection;
 @Component
 @Transactional
 @SuppressWarnings("unchecked")
-public class CrudEJB {
+public class CrudDAO {
     @PersistenceContext
     private EntityManager em;
 

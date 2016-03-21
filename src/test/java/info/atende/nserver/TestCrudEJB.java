@@ -1,4 +1,4 @@
-/*
+package info.atende.nserver;/*
  * Copyright (c) 2014. Atende Tecnologia da Informação e Prestação de Serviços.
  *
  * Aviso. Este software está protegido por leis de direitos autorais e tratados internacionais.
@@ -10,11 +10,13 @@
  * criminal penalties, and will be prosecuted under the maximum extent possible under law.
  */
 
-import info.atende.nserver.model.CrudEJB;
+import info.atende.nserver.model.CrudDAO;
+import info.atende.nserver.test.annotations.SpringIntegrationTest;
 import info.atende.webutil.jpa.Config;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.ejb.EJB;
@@ -28,13 +30,14 @@ import java.util.Collection;
  * Date: 7/20/14.
  */
 @SuppressWarnings("unchecked")
+@SpringIntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestCrudEJB {
     @PersistenceContext
     EntityManager em;
 
-    @EJB
-    CrudEJB crudEJB;
+    @Autowired
+    CrudDAO crudDAO;
 
     /**
      * Testa se o metodo salvar salva na base de dados
@@ -43,7 +46,7 @@ public class TestCrudEJB {
     public void salvar(){
         Config conf = new Config();
         conf.setConfig("new");
-        crudEJB.save(conf);
+        crudDAO.save(conf);
         Config looked = em.find(Config.class, "new");
         Assert.assertNotNull(looked);
     }
@@ -55,10 +58,10 @@ public class TestCrudEJB {
     public void remover(){
         Config conf = new Config();
         conf.setConfig("newc");
-        crudEJB.save(conf);
+        crudDAO.save(conf);
         Config looked = em.find(Config.class, "newc");
         Assert.assertNotNull(looked);
-        crudEJB.removeById("newc", Config.class);
+        crudDAO.removeById("newc", Config.class);
         looked = em.find(Config.class, "newc");
         Assert.assertNull(looked);
     }
@@ -70,8 +73,8 @@ public class TestCrudEJB {
     public void find(){
         Config conf = new Config();
         conf.setConfig("newd");
-        crudEJB.save(conf);
-        Config looked = crudEJB.find(Config.class, "newd");
+        crudDAO.save(conf);
+        Config looked = crudDAO.find(Config.class, "newd");
         Assert.assertNotNull(looked);
     }
 
@@ -80,7 +83,7 @@ public class TestCrudEJB {
      */
     @Test
     public void saveAll(){
-        Collection c = crudEJB.findAll(Config.class);
+        Collection c = crudDAO.findAll(Config.class);
         Assert.assertTrue(c.size() > 0);
     }
 }

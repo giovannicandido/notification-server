@@ -5,7 +5,7 @@ import info.atende.nserver.dto.RestResponse;
 import info.atende.nserver.entity.Statistics;
 import info.atende.nserver.entity.TipoNotificacao;
 import info.atende.nserver.exceptions.EmailNotSendedException;
-import info.atende.nserver.model.CrudEJB;
+import info.atende.nserver.model.CrudDAO;
 import info.atende.nserver.service.NotificationServiceInterface;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
@@ -26,7 +26,7 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
     NotificationServiceInterface notificationServiceInterface;
 
     @EJB
-    CrudEJB crudEJB;
+    CrudDAO crudDAO;
 
     private static Logger logger = Logger.getLogger(NotificationStatisticDecorator.class.getName());
 
@@ -43,7 +43,7 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
                                       if(userPrincipal != null){
                                           if(response.getSuccess() && statisticEnabled()){
                                               Statistics statistics = new Statistics(userPrincipal.getName(), TipoNotificacao.EMAIL);
-                                              crudEJB.save(statistics);
+                                              crudDAO.save(statistics);
                                           }
 
                                       }
@@ -63,7 +63,7 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
         if(userPrincipal != null){
             if(response.getSuccess() && statisticEnabled()){
                 Statistics statistics = new Statistics(userPrincipal.getName(), TipoNotificacao.EMAIL_TEST);
-                crudEJB.save(statistics);
+                crudDAO.save(statistics);
             }
 
         }
@@ -72,7 +72,7 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
 
     }
     private boolean statisticEnabled(){
-        Config conf = crudEJB.find(Config.class, GeralConfig.CONFIG_NAME);
+        Config conf = crudDAO.find(Config.class, GeralConfig.CONFIG_NAME);
         if(conf != null){
             Optional<GeralConfig> geral = ConfigUtils.parseConfig(conf, GeralConfig.class);
             return geral.get().getHabilitarEstatisticas();

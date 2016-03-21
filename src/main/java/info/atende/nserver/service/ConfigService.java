@@ -15,7 +15,7 @@ package info.atende.nserver.service;
 import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.dto.GeralConfig;
 import info.atende.nserver.dto.RestResponse;
-import info.atende.nserver.model.CrudEJB;
+import info.atende.nserver.model.CrudDAO;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import java.util.Optional;
 @SuppressWarnings("unchecked")
 public class ConfigService {
     @Autowired
-    private CrudEJB crud;
+    private CrudDAO crud;
 
     @RequestMapping(value = "/email", method = RequestMethod.POST)
     public RestResponse salvar(@Valid EmailConfig config){
