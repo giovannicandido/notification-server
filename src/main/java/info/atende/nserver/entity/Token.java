@@ -16,10 +16,12 @@ public class Token {
     @Id
     @Column(length = 36, columnDefinition = "char(36)")
     private String token;
+    @Column(length = 50)
+    private String application;
     private LocalDateTime dateCreated;
 
 
-    public Token(String token) {
+    public Token(String token, String name) {
         this.token = token;
     }
 
@@ -40,5 +42,13 @@ public class Token {
 
     public LocalDateTime getDateCreated() {
         return dateCreated;
+    }
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
     }
 }

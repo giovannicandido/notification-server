@@ -20,12 +20,14 @@ import info.atende.nserver.model.CrudDAO;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -88,11 +90,20 @@ public class ConfigService {
         }
         return restResponse;
     }
-    @RequestMapping(value = "/generate-token", method = RequestMethod.GET)
-    public String generateToken(){
+    @RequestMapping(value = "/token", method = RequestMethod.POST)
+    public String generateToken(String appName){
         String id = UUID.randomUUID().toString();
-        Token token = new Token(id);
+        Token token = new Token(id, appName);
         crud.save(token);
         return id;
     }
+    @RequestMapping(value = "/token", method = RequestMethod.GET)
+    public Collection<Token> getAllTokens(String appName){
+        return crud.findAll(Token.class);
+    }
+    @RequestMapping(value = "/token/{id}", method = RequestMethod.DELETE)
+    public void deleteToken(@PathVariable String id){
+        crud.removeById(id, Token.class);
+    }
+
 }
