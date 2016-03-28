@@ -10,9 +10,9 @@
  * criminal penalties, and will be prosecuted under the maximum extent possible under law.
  */
 
-package ws;
+package info.atende.nserver.ws;
 
-import dto.NotificationDTO;
+import info.atende.nserver.dto.NotificationDTO;
 
 import javax.json.Json;
 import javax.json.JsonObject;

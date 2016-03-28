@@ -1,4 +1,4 @@
-package entity;
+package info.atende.nserver.entity;
 
 import javax.persistence.*;
 

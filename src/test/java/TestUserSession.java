@@ -1,6 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
-import ws.WebSocketService;
+import info.atende.nserver.ws.WebSocketService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;

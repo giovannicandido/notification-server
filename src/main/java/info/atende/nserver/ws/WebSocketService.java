@@ -1,6 +1,6 @@
-package ws;
+package info.atende.nserver.ws;
 
-import dto.NotificationDTO;
+import info.atende.nserver.dto.NotificationDTO;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
