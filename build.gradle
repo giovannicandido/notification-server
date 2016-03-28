@@ -24,7 +24,7 @@ ext {
         slf4j: '1.7.5', log4j: '1.7.5',
         keycloak: '1.9.1.Final', deltaSpike: '1.5.2'
 
-  ] 
+  ]
 }
 // If profile is set try to apply the profile file, if not, use the default profile
 if(!hasProperty('profile')){
@@ -35,7 +35,7 @@ if(!hasProperty('profile')){
 
 // compileOnly scope configuration
 // Javadoc generation customization
-javadoc {    
+javadoc {
     project.configure(options){
         charSet = "UTF-8"
         windowTitle = "$appName"
@@ -46,8 +46,8 @@ javadoc {
 
 repositories {
     mavenCentral()
-    maven { 
-      url "http://repository.jboss.org/nexus/content/groups/public" 
+    maven {
+      url "http://repository.jboss.org/nexus/content/groups/public"
     }
     maven{
         url 'https://oss.sonatype.org/content/repositories/snapshot'
@@ -82,9 +82,9 @@ task downloadWildfly << {
     overwrite false
     dest buildDir
   }
-  
+
 }
 task unzipWildfly(dependsOn: downloadWildfly, type: Copy){
   from zipTree("$buildDir/wildfly-${wildflyVersion}.zip")
-  into buildDir 
+  into buildDir
 }
