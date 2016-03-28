@@ -1,4 +1,4 @@
-package ws;
+package info.atende.nserver.ws;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;

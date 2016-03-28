@@ -1,4 +1,4 @@
-package dto;
+package info.atende.nserver.dto;
 
 /**
  * Represents a notification to be sended
