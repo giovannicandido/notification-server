@@ -39,8 +39,8 @@ public class CrudDAO {
      * Salvar entidade na base de dados
      * @param entity
      */
-    public void save(Object entity){
-       em.merge(entity);
+    public Object save(Object entity){
+       return em.merge(entity);
     }
 
     /**

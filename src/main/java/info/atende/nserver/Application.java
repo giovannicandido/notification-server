@@ -32,7 +32,6 @@ import java.util.Collection;
 
 @SpringBootApplication
 @EnableCaching
-@EntityScan(basePackages = {"info.atende.webutil.jpa"})
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
     @Autowired

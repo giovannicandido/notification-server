@@ -3,6 +3,7 @@ package info.atende.nserver.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ import java.sql.SQLException;
  */
 @Configuration
 @ConfigurationProperties(prefix = "params.datasource")
+@EntityScan(basePackages = {"info.atende.webutil.jpa","info.atende.nserver.entity"})
 public class JpaConfig extends HikariConfig {
 
     @Bean
