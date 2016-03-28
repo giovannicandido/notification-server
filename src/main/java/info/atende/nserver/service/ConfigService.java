@@ -12,6 +12,7 @@
 
 package info.atende.nserver.service;
 
+import info.atende.nserver.config.logging.Logging;
 import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.dto.GeralConfig;
 import info.atende.nserver.dto.RestResponse;
@@ -19,11 +20,12 @@ import info.atende.nserver.entity.Token;
 import info.atende.nserver.model.CrudDAO;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -41,6 +43,8 @@ import java.util.UUID;
 @RequestMapping("/api/config")
 @SuppressWarnings("unchecked")
 public class ConfigService {
+    @Logging
+    Logger logger;
     @Autowired
     private CrudDAO crud;
 
@@ -90,15 +94,28 @@ public class ConfigService {
         }
         return restResponse;
     }
+
     @RequestMapping(value = "/token", method = RequestMethod.POST)
-    public String generateToken(String appName){
+    public ResponseEntity<Object> generateToken(@RequestBody Token token){
         String id = UUID.randomUUID().toString();
-        Token token = new Token(id, appName);
-        crud.save(token);
-        return id;
+        token.setToken(id);
+        try {
+            Token save = (Token) crud.save(token);
+            return ResponseEntity.ok(save);
+        }catch (Exception ex){
+            Throwable rootCause = ExceptionUtils.getRootCause(ex);
+            String message;
+            if(rootCause != null){
+                message = rootCause.getMessage();
+            }else{
+                message = ex.getMessage();
+            }
+            logger.error(message);
+            return ResponseEntity.badRequest().body(message);
+        }
     }
     @RequestMapping(value = "/token", method = RequestMethod.GET)
-    public Collection<Token> getAllTokens(String appName){
+    public Collection<Token> getAllTokens(){
         return crud.findAll(Token.class);
     }
     @RequestMapping(value = "/token/{id}", method = RequestMethod.DELETE)

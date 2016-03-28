@@ -61,7 +61,10 @@ repositories {
         compile('com.zaxxer:HikariCP:2.4.4')
         compile group: 'info.atende.webutil', name: 'wu-jpa', version: '0.1.0'
         compile "org.flywaydb:flyway-core:3.2.1"
+        compile 'org.apache.commons:commons-lang3:3.4'
+
         runtime "net.sf.ehcache:ehcache:2.10.1"
+        runtime 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.1'
         //compileOnly "org.keycloak:keycloak-core:$libraryVersions.keycloak"
         //compileOnly "org.keycloak:keycloak-adapter-core:$libraryVersions.keycloak"
         //compile 'commons-beanutils:commons-beanutils:1.9.2'

@@ -11,11 +11,11 @@ import java.util.Date;
 @NamedQueries(
 {
   @NamedQuery(name = "Statistic.byType",
-          query = "SELECT new dto.GraphicCount(c.type, count(c)) FROM Statistics c group by c.type"),
+          query = "SELECT new info.atende.nserver.dto.GraphicCount(c.type, count(c)) FROM Statistics c group by c.type"),
   @NamedQuery(name = "Statistic.byApplication",
-          query = "SELECT NEW dto.GraphicCount(s.userId, count(s)) FROM Statistics s group by s.userId"),
+          query = "SELECT NEW info.atende.nserver.dto.GraphicCount(s.userId, count(s)) FROM Statistics s group by s.userId"),
   @NamedQuery(name ="Statistic.byApplicationTime",
-          query = "SELECT NEW dto.GraphicCount(to_char(s.data, 'dd-mm-yyyy'), count(s)) FROM Statistics s WHERE s.userId = :userId group by to_char(s.data, 'dd-mm-yyyy') order by to_char(s.data, 'dd-mm-yyyy')  "),
+          query = "SELECT NEW info.atende.nserver.dto.GraphicCount(to_char(s.date, 'dd-mm-yyyy'), count(s)) FROM Statistics s WHERE s.userId = :userId group by to_char(s.date, 'dd-mm-yyyy') order by to_char(s.date, 'dd-mm-yyyy')  "),
   @NamedQuery(name = "Statistic.userList",
     query="SELECT s.userId FROM Statistics s GROUP BY s.userId"
   )
@@ -31,7 +31,7 @@ public class Statistics {
     @Enumerated(EnumType.STRING)
     private TipoNotificacao type;
     @Temporal(TemporalType.TIMESTAMP)
-    private Date data;
+    private Date date;
 
     public Statistics() {
     }
@@ -39,7 +39,7 @@ public class Statistics {
     public Statistics(String userId, TipoNotificacao type) {
         this.type = type;
         this.userId = userId;
-        data = new Date();
+        date = new Date();
     }
 
     public Long getId() {
@@ -66,11 +66,11 @@ public class Statistics {
         this.type = type;
     }
 
-    public Date getData() {
-        return data;
+    public Date getDate() {
+        return date;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
