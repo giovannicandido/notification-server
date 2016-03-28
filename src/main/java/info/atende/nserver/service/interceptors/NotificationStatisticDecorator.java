@@ -33,10 +33,11 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
     @Override
     public RestResponse sendEmail(@NotBlank  String email, @NotBlank 
                                   String subject, @NotBlank  String message,  boolean html,
+                                  String token,
                                   HttpServletRequest hsr) throws EmailNotSendedException {
                                       logger.fine("Enviando email para " + email);
                                       Principal userPrincipal = hsr.getUserPrincipal();
-                                      RestResponse response = notificationServiceInterface.sendEmail(email, subject, message, html, hsr);;
+                                      RestResponse response = notificationServiceInterface.sendEmail(email, subject, message, html, token, hsr);;
                                       /**
                                        * Tenta enviar o email, caso tenha sucesso e usuário esteja logado. Salva estatisticas
                                        */

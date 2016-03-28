@@ -13,12 +13,15 @@
 package info.atende.nserver.model;
 
 import info.atende.nserver.config.logging.Logging;
+import info.atende.nserver.entity.Token;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.mail.Message;
@@ -28,15 +31,20 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
+import java.util.concurrent.Future;
 
 /**
  * Criado por Giovanni Silva <giovanni@atende.info>
  */
-@Repository
+@Component
 public class Notification {
     @Logging
-    Logger logger;
+    private Logger logger;
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -52,7 +60,7 @@ public class Notification {
      * @return
      */
     @Async
-    public void sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
+    public Future<Boolean> sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             message.setFrom(new InternetAddress(from));
@@ -88,11 +96,24 @@ public class Notification {
             multipart.addBodyPart(bodyPart);
             message.setContent(multipart);
             mailSender.send(message);
+            return new AsyncResult<>(true);
 
         } catch (MessagingException ex) {
-            throw new EmailNotSendedException("Não foi possível enviar email: " + ex.getMessage());
+            String messageEx = "Não foi possível enviar email: " + ex.getMessage();
+            logger.error(messageEx);
+            throw new EmailNotSendedException(messageEx);
 
         }
 
+    }
+
+    /**
+     * Valida se o token existe
+     * @param token Token para ser validado
+     * @return Verdadeiro se token válido
+     */
+    public boolean validateToken(String token){
+        Token tokenEntity = em.find(Token.class, token);
+        return tokenEntity != null;
     }
 }

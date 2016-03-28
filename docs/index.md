@@ -34,6 +34,29 @@ You can configure that on the IDE to override for dev. Don't edit **-dev.propert
 
 ![Email Config IDEA](images/config_email.png "IDEA Email Config Spring")
 
+## Configuration of Database
+
+You can configure Spring application in many different ways. In production the best way
+is using environment configuration, or using command line. The spring config file use the follow
+properties (extracted from _dev_ environment):
+
+    params.datasource.jdbcUrl=jdbc:postgresql://docker.local/notification
+    params.datasource.username=super
+    params.datasource.password=1234
+
+That configuration became env variables:
+
+* PARAMS_DATASOURCE_JDBCURL
+* PARAMS_DATASOURCE_USERNAME
+* PARAMS_DATASOURCE_PASSWORD
+
+Or command line parameters:
+
+* --params.datasource.jdbcUrl
+* --params.datasource.username
+* --params.datasource.password
+
+For more information see [Spring Boot Config]
 
 ## Usage from a dev perspective
 

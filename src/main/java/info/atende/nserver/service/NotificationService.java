@@ -31,15 +31,29 @@ import javax.servlet.http.HttpServletRequest;
  * Date: 7/20/14.
  */
 @RestController
-@RequestMapping("/notification")
+@RequestMapping("/api/notification")
 public class NotificationService implements NotificationServiceInterface {
+
+
     @Autowired
-    Notification notification;
+    private Notification notification;
+
+    public NotificationService(Notification notification) {
+        this.notification = notification;
+    }
+
+    public NotificationService() {
+    }
 
     @RequestMapping(value = "/email", method = RequestMethod.POST)
     public RestResponse sendEmail(@NotBlank  String email, @NotBlank  String subject,
-                                  @NotBlank  String message,  boolean html, HttpServletRequest hsr
+                                  @NotBlank  String message,  boolean html,
+                                  @NotBlank String token,
+                                  HttpServletRequest hsr
     ) throws EmailNotSendedException {
+        if(!notification.validateToken(token)){
+            throw new EmailNotSendedException("token inválido");
+        }
         String[] to = email.split(";");
         MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
         notification.sendEmail(to, subject, message, mailMimeType);

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
+@EnableCaching
 @EntityScan(basePackages = {"info.atende.webutil.jpa"})
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
