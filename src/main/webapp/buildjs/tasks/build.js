@@ -50,3 +50,11 @@ gulp.task('build', function(callback) {
     callback
   );
 });
+
+gulp.task('build-prod', function(callback){
+  return runSequence(
+    'clean',
+    ['bundle'],
+    callback
+  );
+});

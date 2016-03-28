@@ -84,4 +84,22 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
 }
 
+task buildJs(type: Exec){
+    workingDir 'src/main/webapp'
+    commandLine 'gulp', 'build-prod'
+}
+
+task unbundleJs(type: Exec){
+    workingDir 'src/main/webapp'
+    commandLine 'gulp', 'unbundle'
+}
+
+task copyWebapp(type: Copy, dependsOn: buildJs){
+    from 'src/main/webapp'
+    into 'build/resources/main/static'
+    exclude 'node_modules/**'
+}
+
+jar.dependsOn(copyWebapp)
+
 
