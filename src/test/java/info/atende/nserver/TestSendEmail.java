@@ -10,16 +10,15 @@ package info.atende.nserver;/*
  * criminal penalties, and will be prosecuted under the maximum extent possible under law.
  */
 
+import com.icegreen.greenmail.junit.GreenMailRule;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.nserver.model.MailMimeType;
 import info.atende.nserver.model.Notification;
 import info.atende.nserver.test.annotations.SpringIntegrationTest;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,6 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Criado por Giovanni Silva <giovanni@atende.info>
@@ -37,23 +38,18 @@ import javax.mail.internet.MimeMessage;
 public class TestSendEmail {
     @Autowired
     private Notification notification;
-    private static GreenMail greenMail;
-
-    @BeforeClass
-    public static void init(){
-        greenMail = new GreenMail();
-        greenMail.start();
-    }
-    @AfterClass
-    public static void shutdown(){
-        greenMail.stop();
-    }
+    @Rule
+    public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
 
     @Test
-    public void sendEmail() throws MessagingException, EmailNotSendedException {
+    public void sendEmail() throws MessagingException, EmailNotSendedException, ExecutionException, InterruptedException {
 
         String to[] = {"giovanni@atende.info","alberto@testdomain.com.br"};
-        notification.sendEmail(to, "test", "body", MailMimeType.TXT);
+        Future<Boolean> booleanFuture = notification.sendEmail(to, "test", "body", MailMimeType.TXT);
+        // Async call get completed
+        booleanFuture.get();
+        MimeMessage[] messages = greenMail.getReceivedMessages();
+        Assert.assertTrue("Mensagem deve ter sido enviada", messages.length > 0);
         MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
         Assert.assertTrue(GreenMailUtil.getBody(mimeMessage).contains("body"));
         Assert.assertEquals("test", mimeMessage.getSubject());

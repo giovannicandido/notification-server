@@ -14,7 +14,7 @@ import java.util.List;
  * Criado por Giovanni Silva <giovanni@pucminas.br>
  */
 @RestController
-@RequestMapping("/graphic")
+@RequestMapping("/api/graphic")
 public class GraphicService {
     @PersistenceContext
     private EntityManager em;

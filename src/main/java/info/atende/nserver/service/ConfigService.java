@@ -15,6 +15,7 @@ package info.atende.nserver.service;
 import info.atende.nserver.dto.EmailConfig;
 import info.atende.nserver.dto.GeralConfig;
 import info.atende.nserver.dto.RestResponse;
+import info.atende.nserver.entity.Token;
 import info.atende.nserver.model.CrudDAO;
 import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 
 /**
@@ -34,7 +36,7 @@ import java.util.Optional;
  * Date: 7/20/14.
  */
 @RestController
-@RequestMapping("/config")
+@RequestMapping("/api/config")
 @SuppressWarnings("unchecked")
 public class ConfigService {
     @Autowired
@@ -86,5 +88,11 @@ public class ConfigService {
         }
         return restResponse;
     }
-
+    @RequestMapping(value = "/generate-token", method = RequestMethod.GET)
+    public String generateToken(){
+        String id = UUID.randomUUID().toString();
+        Token token = new Token(id);
+        crud.save(token);
+        return id;
+    }
 }
