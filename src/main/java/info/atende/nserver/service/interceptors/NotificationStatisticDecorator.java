@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.Response;
 import java.security.Principal;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 
@@ -55,7 +56,7 @@ public class NotificationStatisticDecorator  {
                                   }
 
     public RestResponse sendEmailTest(@Email @NotBlank String email,
-                                     HttpServletRequest hsr) throws EmailNotSendedException {
+                                     HttpServletRequest hsr) throws EmailNotSendedException, ExecutionException, InterruptedException {
         logger.fine("Enviando email de teste para " + email);
         Principal userPrincipal = hsr.getUserPrincipal();
 
