@@ -48,7 +48,8 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         super.configure(http);
-        http.csrf().ignoringAntMatchers("/api/notification/email");
+//        http.csrf().ignoringAntMatchers("/api/notification/email");
+        http.csrf().disable();
         http
                 .authorizeRequests()
                 .antMatchers("/api/notification/email")

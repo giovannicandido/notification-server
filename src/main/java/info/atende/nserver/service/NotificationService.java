@@ -20,11 +20,14 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Servico principal
@@ -50,7 +53,7 @@ public class NotificationService implements NotificationServiceInterface {
      * {@inheritDoc}
      */
     @RequestMapping(value = "/email", method = RequestMethod.POST)
-    public ResponseEntity<String> sendEmail(@NotBlank  String email,
+    public ResponseEntity<String> sendEmail(@NotBlank  String to,
                                             @NotBlank  String subject,
                                             @NotBlank  String message,
                                             String from,
@@ -61,18 +64,26 @@ public class NotificationService implements NotificationServiceInterface {
         if(!notification.validateToken(token)){
             return ResponseEntity.badRequest().body("invalid token");
         }
-        String[] to = email.split(";");
+        String[] toArray = to.split(";");
         MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
-        notification.sendEmail(to, from, subject, message, mailMimeType);
+        notification.sendEmail(toArray, from, subject, message, mailMimeType);
         return ResponseEntity.ok("Sended Email");
 
     }
     @RequestMapping(value = "/test-email", method = RequestMethod.POST)
-    public RestResponse sendEmailTest(@Email @NotBlank String email, HttpServletRequest hsr) throws EmailNotSendedException {
-        String[] to = {email};
+    public RestResponse sendEmailTest(@Email @NotBlank @RequestBody String to, HttpServletRequest hsr) throws EmailNotSendedException, ExecutionException, InterruptedException {
+        String[] toArray = {to};
         String message = "Notification Server Email Test";
-        notification.sendEmail(to, null, "Email server test", message, MailMimeType.TXT);
-        return new RestResponse("Enviado com sucesso");
+        Future<Boolean> booleanFuture = notification.sendEmail(toArray, null, "Email server test", message, MailMimeType.TXT);
+        try {
+            if(booleanFuture.get()){
+                return new RestResponse("Email sended", true);
+            }else{
+                return new RestResponse("Can't send email", false);
+            }
+        }catch(Exception ex){
+            return new RestResponse(ex.getMessage(), false);
+        }
 
     }
 

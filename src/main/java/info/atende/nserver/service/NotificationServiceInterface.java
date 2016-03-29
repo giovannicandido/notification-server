@@ -5,6 +5,7 @@ import info.atende.nserver.exceptions.EmailNotSendedException;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Criado por Giovanni Silva <giovanni@pucminas.br>
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface NotificationServiceInterface {
     /**
      * Send a email
-     * @param email Email to send. Multiple emails separed by ;
+     * @param to Email to send. Multiple emails separed by ;
      * @param subject Subject of the message
      * @param message Message to send
      * @param from From address, null if you want use the default
@@ -22,12 +23,12 @@ public interface NotificationServiceInterface {
      * @return A 200 Ok response if the email is sended, 40x ou 50x if not
      * @throws EmailNotSendedException
      */
-    public ResponseEntity<String> sendEmail(String email, String subject,
+    public ResponseEntity<String> sendEmail(String to, String subject,
                                             String message,
                                             String from,
                                             boolean html,
                                             String token,
                                             HttpServletRequest hsr
     ) throws EmailNotSendedException;
-    public RestResponse sendEmailTest(String email, HttpServletRequest hsr) throws EmailNotSendedException;
+    public RestResponse sendEmailTest(String email, HttpServletRequest hsr) throws EmailNotSendedException, ExecutionException, InterruptedException;
 }
