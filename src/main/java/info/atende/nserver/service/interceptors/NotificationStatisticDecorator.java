@@ -35,12 +35,12 @@ public class NotificationStatisticDecorator  {
     private static Logger logger = Logger.getLogger(NotificationStatisticDecorator.class.getName());
 
     public ResponseEntity<String> sendEmail(@NotBlank  String email, @NotBlank
-                                  String subject, @NotBlank  String message, boolean html,
+                                  String subject, @NotBlank  String message, String from, boolean html,
                               String token,
                               HttpServletRequest hsr) throws EmailNotSendedException {
                                       logger.fine("Enviando email para " + email);
                                       Principal userPrincipal = hsr.getUserPrincipal();
-                                      ResponseEntity<String> response = notificationServiceInterface.sendEmail(email, subject, message, html, token, hsr);;
+                                      ResponseEntity<String> response = notificationServiceInterface.sendEmail(email, subject, message, from, html, token, hsr);;
                                       /**
                                        * Tenta enviar o email, caso tenha sucesso e usuário esteja logado. Salva estatisticas
                                        */

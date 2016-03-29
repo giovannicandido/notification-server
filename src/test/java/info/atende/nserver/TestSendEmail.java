@@ -45,7 +45,7 @@ public class TestSendEmail {
     public void sendEmail() throws MessagingException, EmailNotSendedException, ExecutionException, InterruptedException {
 
         String to[] = {"giovanni@atende.info","alberto@testdomain.com.br"};
-        Future<Boolean> booleanFuture = notification.sendEmail(to, "test", "body", MailMimeType.TXT);
+        Future<Boolean> booleanFuture = notification.sendEmail(to, null, "test", "body", MailMimeType.TXT);
         // Async call get completed
         booleanFuture.get();
         MimeMessage[] messages = greenMail.getReceivedMessages();
@@ -56,6 +56,23 @@ public class TestSendEmail {
         Assert.assertEquals("no-reply@test.com", mimeMessage.getFrom()[0].toString());
         Assert.assertEquals("giovanni@atende.info", mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString());
         Assert.assertEquals("alberto@testdomain.com.br", mimeMessage.getRecipients(Message.RecipientType.TO)[1].toString());
+
+
+    }
+
+    @Test
+    public void sendEmailWithFrom() throws MessagingException, EmailNotSendedException, ExecutionException, InterruptedException {
+
+        String to[] = {"giovanni@atende.info","alberto@testdomain.com.br"};
+        Future<Boolean> booleanFuture = notification.sendEmail(to, "fromtest@test.com.br", "test", "body", MailMimeType.TXT);
+        // Async call get completed
+        booleanFuture.get();
+        MimeMessage[] messages = greenMail.getReceivedMessages();
+        Assert.assertTrue("Mensagem deve ter sido enviada", messages.length > 0);
+        MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
+
+        Assert.assertEquals("fromtest@test.com.br", mimeMessage.getFrom()[0].toString());
+
 
 
     }

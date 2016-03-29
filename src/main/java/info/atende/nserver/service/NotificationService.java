@@ -46,9 +46,15 @@ public class NotificationService implements NotificationServiceInterface {
     public NotificationService() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @RequestMapping(value = "/email", method = RequestMethod.POST)
-    public ResponseEntity<String> sendEmail(@NotBlank  String email, @NotBlank  String subject,
-                                            @NotBlank  String message, boolean html,
+    public ResponseEntity<String> sendEmail(@NotBlank  String email,
+                                            @NotBlank  String subject,
+                                            @NotBlank  String message,
+                                            String from,
+                                            boolean html,
                                             @NotBlank String token,
                                             HttpServletRequest hsr
     ) throws EmailNotSendedException {
@@ -57,7 +63,7 @@ public class NotificationService implements NotificationServiceInterface {
         }
         String[] to = email.split(";");
         MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
-        notification.sendEmail(to, subject, message, mailMimeType);
+        notification.sendEmail(to, from, subject, message, mailMimeType);
         return ResponseEntity.ok("Sended Email");
 
     }
@@ -65,7 +71,7 @@ public class NotificationService implements NotificationServiceInterface {
     public RestResponse sendEmailTest(@Email @NotBlank String email, HttpServletRequest hsr) throws EmailNotSendedException {
         String[] to = {email};
         String message = "Notification Server Email Test";
-        notification.sendEmail(to, "Email server test", message, MailMimeType.TXT);
+        notification.sendEmail(to, null, "Email server test", message, MailMimeType.TXT);
         return new RestResponse("Enviado com sucesso");
 
     }
