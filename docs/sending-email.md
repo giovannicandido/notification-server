@@ -10,6 +10,7 @@ Send a **POST** to the application url: **/api/notification/email** with the con
 | email         | Destination Email, multiples emails are separated by comma (;) | Required. Valid email |
 | subject       | Subject of the message                                         | Required              |
 | html          | If the email is Html content                                   | Option                |
+| from          | From address                                                   | Option. Valid email   |
 
 Response
 

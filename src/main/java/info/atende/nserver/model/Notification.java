@@ -60,10 +60,14 @@ public class Notification {
      * @return
      */
     @Async
-    public Future<Boolean> sendEmail(String[] to, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
+    public Future<Boolean> sendEmail(String[] to, String from, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
         MimeMessage message = mailSender.createMimeMessage();
         try {
-            message.setFrom(new InternetAddress(from));
+            if(from == null || from.trim().equals("")) {
+                message.setFrom(new InternetAddress(this.from));
+            } else {
+                message.setFrom(new InternetAddress(from));
+            }
             InternetAddress[] address = new InternetAddress[to.length];
 
             for (int i = 0; i < to.length; i++) {
