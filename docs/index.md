@@ -13,7 +13,7 @@ This project is part of a central architecture when several applications should 
 
 ## Configuration of email
 
-Use this configuration on file. In production this can be override by ENV variables ou command line. See [Spring Boot Config]
+Use this configuration on file. In production this can be override by ENV variables or command line. See [Spring Boot Config]
 
     mail.from=no-reply@test.com
     spring.mail.host=localhost
@@ -82,6 +82,19 @@ use **docker-machine** point to `docker-machine ip default` # default is the nam
 
     sudo echo "127.0.0.1 docker.local" >> /etc/hosts
 
+## Keycloak Configuration
+
+The project uses [Keycloak Server] to authentication
+
+_Dev_ ENV use the file **src/main/resources/keycloak-dev.json**
+The _default_ ENV use file **src/main/resources/keycloak-prod.json**
+
+Both are not in git, and you need to create one for the application.
+
+You can override the location with **--keycloak.configurationFile**. Example:
+
+    --keycloak.configurationFile=file:///etc/keycloak.json
+
 ## Running Tests
 
 ```
@@ -89,3 +102,4 @@ use **docker-machine** point to `docker-machine ip default` # default is the nam
 ```
 
 [Spring Boot Config]:https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
+[Keycloak Server]:http://keycloak.jboss.org
