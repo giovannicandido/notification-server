@@ -11,18 +11,22 @@ import info.atende.webutil.jpa.Config;
 import info.atende.webutil.jpa.ConfigUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.Response;
 import java.security.Principal;
 import java.util.Optional;
 import java.util.logging.Logger;
 
 
 /**
+ * TODO Implement for Spring Something similar
  * Criado por Giovanni Silva <giovanni@pucminas.br>
  */
-public class NotificationStatisticDecorator implements NotificationServiceInterface {
+public class NotificationStatisticDecorator  {
     NotificationServiceInterface notificationServiceInterface;
 
     @EJB
@@ -30,19 +34,18 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
 
     private static Logger logger = Logger.getLogger(NotificationStatisticDecorator.class.getName());
 
-    @Override
-    public RestResponse sendEmail(@NotBlank  String email, @NotBlank 
-                                  String subject, @NotBlank  String message,  boolean html,
-                                  String token,
-                                  HttpServletRequest hsr) throws EmailNotSendedException {
+    public ResponseEntity<String> sendEmail(@NotBlank  String email, @NotBlank
+                                  String subject, @NotBlank  String message, boolean html,
+                              String token,
+                              HttpServletRequest hsr) throws EmailNotSendedException {
                                       logger.fine("Enviando email para " + email);
                                       Principal userPrincipal = hsr.getUserPrincipal();
-                                      RestResponse response = notificationServiceInterface.sendEmail(email, subject, message, html, token, hsr);;
+                                      ResponseEntity<String> response = notificationServiceInterface.sendEmail(email, subject, message, html, token, hsr);;
                                       /**
                                        * Tenta enviar o email, caso tenha sucesso e usuário esteja logado. Salva estatisticas
                                        */
                                       if(userPrincipal != null){
-                                          if(response.getSuccess() && statisticEnabled()){
+                                          if(response.getStatusCode() == HttpStatus.OK && statisticEnabled()){
                                               Statistics statistics = new Statistics(userPrincipal.getName(), TipoNotificacao.EMAIL);
                                               crudDAO.save(statistics);
                                           }
@@ -51,7 +54,6 @@ public class NotificationStatisticDecorator implements NotificationServiceInterf
                                       return response;
                                   }
 
-    @Override
     public RestResponse sendEmailTest(@Email @NotBlank String email,
                                      HttpServletRequest hsr) throws EmailNotSendedException {
         logger.fine("Enviando email de teste para " + email);

@@ -19,6 +19,7 @@ import info.atende.nserver.model.Notification;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,18 +47,18 @@ public class NotificationService implements NotificationServiceInterface {
     }
 
     @RequestMapping(value = "/email", method = RequestMethod.POST)
-    public RestResponse sendEmail(@NotBlank  String email, @NotBlank  String subject,
-                                  @NotBlank  String message,  boolean html,
-                                  @NotBlank String token,
-                                  HttpServletRequest hsr
+    public ResponseEntity<String> sendEmail(@NotBlank  String email, @NotBlank  String subject,
+                                            @NotBlank  String message, boolean html,
+                                            @NotBlank String token,
+                                            HttpServletRequest hsr
     ) throws EmailNotSendedException {
         if(!notification.validateToken(token)){
-            throw new EmailNotSendedException("token inválido");
+            return ResponseEntity.badRequest().body("invalid token");
         }
         String[] to = email.split(";");
         MailMimeType mailMimeType = html ? MailMimeType.HTML : MailMimeType.TXT;
         notification.sendEmail(to, subject, message, mailMimeType);
-        return new RestResponse("Email enviado");
+        return ResponseEntity.ok("Sended Email");
 
     }
     @RequestMapping(value = "/test-email", method = RequestMethod.POST)
