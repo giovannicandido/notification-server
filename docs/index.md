@@ -22,13 +22,22 @@ Use this configuration on file. In production this can be override by ENV variab
 
 Gmail Example:
 
-    spring.mail.host = smtp.gmail.com
-    spring.mail.username = *****@gmail.com
-    spring.mail.password = ****
-    spring.mail.properties.mail.smtp.auth = true
-    spring.mail.properties.mail.smtp.socketFactory.port = 465
-    spring.mail.properties.mail.smtp.socketFactory.class = javax.net.ssl.SSLSocketFactory
-    spring.mail.properties.mail.smtp.socketFactory.fallback = false
+    spring.mail.host=smtp.gmail.com
+    spring.mail.username=*****@gmail.com
+    spring.mail.password=****
+    spring.mail.properties.mail.smtp.auth=true
+    spring.mail.properties.mail.smtp.socketFactory.port=465
+    spring.mail.properties.mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
+    spring.mail.properties.mail.smtp.socketFactory.fallback=false
+
+Microsoft Office 365 Example:
+
+    spring.mail.host=smtp.office365.com
+    spring.mail.username=****
+    spring.mail.password=****
+    spring.mail.port=587
+    spring.mail.properties.mail.smtp.auth=true
+    spring.mail.properties.mail.smtp.starttls.enable=true
 
 You can configure that on the IDE to override for dev. Don't edit **-dev.properties** because it is checked on version control
 

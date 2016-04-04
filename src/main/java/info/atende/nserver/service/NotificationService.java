@@ -20,10 +20,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.ExecutionException;
@@ -53,12 +50,12 @@ public class NotificationService implements NotificationServiceInterface {
      * {@inheritDoc}
      */
     @RequestMapping(value = "/email", method = RequestMethod.POST)
-    public ResponseEntity<String> sendEmail(@NotBlank  String to,
-                                            @NotBlank  String subject,
-                                            @NotBlank  String message,
+    public ResponseEntity<String> sendEmail(@RequestParam(required = true) @NotBlank  String to,
+                                            @RequestParam(required = true) @NotBlank  String subject,
+                                            @RequestParam(required = true) @NotBlank  String message,
                                             String from,
                                             boolean html,
-                                            @NotBlank String token,
+                                            @RequestParam(required = true) @NotBlank String token,
                                             HttpServletRequest hsr
     ) throws EmailNotSendedException {
         if(!notification.validateToken(token)){
