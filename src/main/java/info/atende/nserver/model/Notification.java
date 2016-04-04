@@ -61,6 +61,7 @@ public class Notification {
      */
     @Async
     public Future<Boolean> sendEmail(String[] to, String from, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
+
         MimeMessage message = mailSender.createMimeMessage();
         try {
             if(from == null || from.trim().equals("")) {
@@ -76,6 +77,10 @@ public class Notification {
                 } catch (Exception e) {
                    throw new EmailNotSendedException("Endereço de email inválido");
                 }
+            }
+            String addressString = "";
+            for(int i = 0; i < address.length; i++) {
+                addressString += address[i];
             }
             message.setRecipients(Message.RecipientType.TO, address);
             message.setSubject(subject);
@@ -100,6 +105,7 @@ public class Notification {
             multipart.addBodyPart(bodyPart);
             message.setContent(multipart);
             mailSender.send(message);
+            logger.info("Email enviado: " + "from " + from + " to " + to + " subject: " + subject + " message: " + message);
             return new AsyncResult<>(true);
 
         } catch (MessagingException ex) {
