@@ -34,3 +34,4 @@ Example of RestClient JAX-RS 2.0
     form.param("message",htmlContent)
     val response = target.request().post(Entity.entity(form,MediaType.APPLICATION_FORM_URLENCODED_TYPE), classOf[String])
 
+All messages are sended with UTF-8 charset

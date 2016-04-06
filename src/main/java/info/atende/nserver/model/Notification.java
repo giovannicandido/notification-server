@@ -78,10 +78,6 @@ public class Notification {
                    throw new EmailNotSendedException("Endereço de email inválido");
                 }
             }
-            String addressString = "";
-            for(int i = 0; i < address.length; i++) {
-                addressString += address[i];
-            }
             message.setRecipients(Message.RecipientType.TO, address);
             message.setSubject(subject);
             message.setSentDate(new Date());
@@ -89,13 +85,12 @@ public class Notification {
             Multipart multipart = new MimeMultipart("alternative");
 
             MimeBodyPart bodyPart = new MimeBodyPart();
-
             switch (mailMimeType){
                 case TXT:
-                    bodyPart.setText(body);
+                    bodyPart.setText(body, "text/plain; charset=UTF-8");
                     break;
                 case HTML:
-                    bodyPart.setContent(body, "text/html");
+                    bodyPart.setContent(body, "text/html; charset=UTF-8");
                     break;
                 default:
                     bodyPart.setText(body);
@@ -105,7 +100,7 @@ public class Notification {
             multipart.addBodyPart(bodyPart);
             message.setContent(multipart);
             mailSender.send(message);
-            logger.info("Email enviado: " + "from " + from + " to " + to + " subject: " + subject + " message: " + message);
+            logger.info("Email enviado: " + "from " + from + " to " + getToAddressString(to) + " subject: " + subject);
             return new AsyncResult<>(true);
 
         } catch (Exception ex) {
@@ -115,6 +110,14 @@ public class Notification {
 
         }
 
+    }
+
+    private String getToAddressString(String[] to) {
+        StringBuilder format = new StringBuilder();
+        for(String s : to){
+            format.append(s + ";");
+        }
+        return format.toString();
     }
 
     /**
