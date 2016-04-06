@@ -11,7 +11,20 @@ This project is part of a central architecture when several applications should 
 * Spring Boot
 * PostgreSQL Database
 
+This server creates a ThreadPool to send e-mails. The HTTP request is asyncronous.
+By default it creates a Pool with the parameters:
+
+    async.corePoolSize=50
+    async.maxPoolSize=100
+    async.queueCapacity=500
+
+You can override that in the spring config properties
+
 ## Configuration of email
+
+You need to configure the email sender
+
+    mail.from=no-reply@test.com
 
 Use this configuration on file. In production this can be override by ENV variables or command line. See [Spring Boot Config]
 
@@ -22,6 +35,7 @@ Use this configuration on file. In production this can be override by ENV variab
 
 Gmail Example:
 
+    mail.from=no-reply@test.com
     spring.mail.host=smtp.gmail.com
     spring.mail.username=*****@gmail.com
     spring.mail.password=****
@@ -32,6 +46,7 @@ Gmail Example:
 
 Microsoft Office 365 Example:
 
+    mail.from=no-reply@test.com
     spring.mail.host=smtp.office365.com
     spring.mail.username=****
     spring.mail.password=****
