@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.Executor;
 
 /**
@@ -14,14 +15,14 @@ import java.util.concurrent.Executor;
  */
 @Configuration
 @EnableAsync
-public class AsyncConfiguration implements AsyncConfigurer {
+public class AsyncConfiguration extends AsyncConfigurationProperties implements AsyncConfigurer {
 
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(100);
-        taskExecutor.setMaxPoolSize(100);
-        taskExecutor.setQueueCapacity(500);
+        taskExecutor.setCorePoolSize(getCorePoolSize());
+        taskExecutor.setMaxPoolSize(getMaxPoolSize());
+        taskExecutor.setQueueCapacity(getQueueCapacity());
         taskExecutor.initialize();
         return taskExecutor;
     }

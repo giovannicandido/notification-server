@@ -108,7 +108,7 @@ public class Notification {
             logger.info("Email enviado: " + "from " + from + " to " + to + " subject: " + subject + " message: " + message);
             return new AsyncResult<>(true);
 
-        } catch (MessagingException ex) {
+        } catch (Exception ex) {
             String messageEx = "Não foi possível enviar email: " + ex.getMessage();
             logger.error(messageEx);
             throw new EmailNotSendedException(messageEx);

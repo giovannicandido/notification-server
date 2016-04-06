@@ -12,6 +12,7 @@
 
 package info.atende.nserver.service;
 
+import info.atende.nserver.config.logging.Logging;
 import info.atende.nserver.dto.RestResponse;
 import info.atende.nserver.exceptions.EmailNotSendedException;
 import info.atende.nserver.model.MailMimeType;

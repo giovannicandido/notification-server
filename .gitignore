@@ -7,3 +7,4 @@ logs/
 /atlassian-ide-plugin.xml
 src/main/resources/keycloak-prod.json
 src/main/resources/keycloak-dev.json
+.vscode/
