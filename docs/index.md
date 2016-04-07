@@ -20,6 +20,13 @@ By default it creates a Pool with the parameters:
 
 You can override that in the spring config properties
 
+## Performance Test
+
+You can use apache2-utils for performance test. There is a email-post.data file in the docs folder for convenience
+The code to test the email sender service is:
+
+    ab -n 1041 -c 30 -p docs/email-post.data -T application/x-www-form-urlencoded  http://localhost:8081/api/notification/email
+
 ## Configuration of email
 
 You need to configure the email sender
