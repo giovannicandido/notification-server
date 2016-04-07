@@ -87,7 +87,7 @@ public class Notification {
             MimeBodyPart bodyPart = new MimeBodyPart();
             switch (mailMimeType){
                 case TXT:
-                    bodyPart.setText(body, "text/plain; charset=UTF-8");
+                    bodyPart.setText(body, "UTF-8");
                     break;
                 case HTML:
                     bodyPart.setContent(body, "text/html; charset=UTF-8");
