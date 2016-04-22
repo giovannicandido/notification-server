@@ -77,7 +77,7 @@ properties (extracted from _dev_ environment):
 
 That configuration became env variables:
 
-* PARAMS_DATASOURCE_JDBCURL
+* PARAMS_DATASOURCE_JDBC_URL
 * PARAMS_DATASOURCE_USERNAME
 * PARAMS_DATASOURCE_PASSWORD
 
