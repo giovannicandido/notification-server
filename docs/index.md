@@ -61,6 +61,19 @@ Microsoft Office 365 Example:
     spring.mail.properties.mail.smtp.auth=true
     spring.mail.properties.mail.smtp.starttls.enable=true
 
+Example using env variables
+
+    export MAIL_FROM=****
+    export SPRING_MAIL_HOST=smtp.office365.com
+    export SPRING_MAIL_USERNAME=****
+    export SPRING_MAIL_PASSWORD=****
+    export SPRING_MAIL_PORT=587
+    #export SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+    #export SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+
+PS.: Don't use **STARTTLS_ENABLE** and **SMTP_AUTH** with env variables, in my test it not work, and put that in
+command line parameter
+
 You can configure that on the IDE to override for dev. Don't edit **-dev.properties** because it is checked on version control
 
 ![Email Config IDEA](images/config_email.png "IDEA Email Config Spring")
