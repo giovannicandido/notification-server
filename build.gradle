@@ -12,6 +12,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
+apply plugin: 'idea'
 
 jar {
     baseName = 'notification-server'
@@ -49,35 +50,41 @@ repositories {
     maven{
         url 'https://oss.sonatype.org/content/repositories/public'
     }
-    dependencies {
-        // Spring
-        compile('org.springframework.boot:spring-boot-starter-data-jpa')
-        compile('org.springframework.boot:spring-boot-starter-mail')
-        compile('org.springframework.boot:spring-boot-starter-web')
-        compile('org.springframework.boot:spring-boot-starter-security')
-        testCompile('org.springframework.boot:spring-boot-starter-test')
-        testCompile('org.springframework:spring-test')
 
-        runtime('org.postgresql:postgresql')
-        compile('com.zaxxer:HikariCP:2.4.4')
-        compile group: 'info.atende.webutil', name: 'wu-jpa', version: '0.1.0'
-        compile "org.flywaydb:flyway-core:3.2.1"
-        compile 'org.apache.commons:commons-lang3:3.4'
-
-        runtime "net.sf.ehcache:ehcache:2.10.1"
-        runtime 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.1'
-        compile "org.keycloak:keycloak-spring-security-adapter:$libraryVersions.keycloak"
-
-        // Test
-        testCompile('org.springframework.boot:spring-boot-starter-test')
-        testCompile 'com.icegreen:greenmail:1.5.0'
-        testCompile "org.mockito:mockito-core:1.+"
-
-
-    }
 }
 
+dependencies {
+    // Spring
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-mail')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework:spring-test')
 
+    runtime('org.postgresql:postgresql')
+    compile('com.zaxxer:HikariCP:2.4.4')
+    compile group: 'info.atende.webutil', name: 'wu-jpa', version: '0.1.0'
+    compile "org.flywaydb:flyway-core:3.2.1"
+    compile 'org.apache.commons:commons-lang3:3.4'
+
+    runtime "net.sf.ehcache:ehcache:2.10.1"
+    runtime 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.1'
+    compile "org.keycloak:keycloak-spring-security-adapter:$libraryVersions.keycloak"
+
+    // Test
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'com.icegreen:greenmail:1.5.0'
+    testCompile "org.mockito:mockito-core:1.+"
+
+
+}
+
+idea {
+    module {
+        excludeDirs += file('.wercker')
+    }
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
