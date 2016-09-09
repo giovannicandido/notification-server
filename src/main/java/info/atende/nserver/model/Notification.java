@@ -22,10 +22,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -79,7 +77,7 @@ public class Notification {
                 }
             }
             message.setRecipients(Message.RecipientType.TO, address);
-            message.setSubject(subject);
+            message.setSubject(subject, "UTF-8");
             message.setSentDate(new Date());
 
             Multipart multipart = new MimeMultipart("alternative");
@@ -93,7 +91,7 @@ public class Notification {
                     bodyPart.setContent(body, "text/html; charset=UTF-8");
                     break;
                 default:
-                    bodyPart.setText(body);
+                    bodyPart.setText(body, "UTF-8");
 
             }
 
