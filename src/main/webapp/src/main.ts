@@ -1,16 +1,12 @@
-import 'bootstrap';
-import {Aurelia} from 'aurelia-framework';
+import './polyfills.ts';
 
-export function configure(aurelia: Aurelia) {
-  aurelia.use
-    .standardConfiguration()
-    .developmentLogging();
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableProdMode } from '@angular/core';
+import { environment } from './environments/environment';
+import { AppModule } from './app/';
 
-  //Uncomment the line below to enable animation.
-  //aurelia.use.plugin('aurelia-animator-css');
-
-  //Anyone wanting to use HTMLImports to load views, will need to install the following plugin.
-  //aurelia.use.plugin('aurelia-html-import-template-loader')
-
-  aurelia.start().then(() => aurelia.setRoot());
+if (environment.production) {
+  enableProdMode();
 }
+
+platformBrowserDynamic().bootstrapModule(AppModule);
