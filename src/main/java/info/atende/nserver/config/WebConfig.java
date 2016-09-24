@@ -6,14 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -55,7 +52,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/logout").setViewName("logout");
-//        registry.addViewController("/index.html").setViewName("index");
+        registry.addViewController("/").setViewName("forward:/index.html");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
@@ -149,19 +146,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      */
     private boolean devMode() {
         return this.env.acceptsProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
-    }
-
-    @Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-
-        return (container -> {
-            ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/401.html");
-            ErrorPage error403Page = new ErrorPage(HttpStatus.FORBIDDEN, "/403.html");
-            ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html");
-            ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500.html");
-
-            container.addErrorPages(error401Page, error403Page, error404Page, error500Page);
-        });
     }
 }
 

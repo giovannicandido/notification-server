@@ -50,7 +50,7 @@ export class TokenComponent implements OnInit {
       .map(_ => _.json())
       .catch(this.handleError)
       .subscribe(r => {
-        this.tokens = r.json()
+        this.tokens = r
       })
   }
 
