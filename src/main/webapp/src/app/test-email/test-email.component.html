@@ -1,3 +1,10 @@
-<p>
-  test-email works!
-</p>
+<section class="au-animate">
+  <h2>Send a email test</h2>
+  <div>
+    <form role="form" (submit)="send()">
+      <input name="email" placeholder="Email" type="email" required [(ngModel)]="to">
+      <button class="btn btn-default" type="submit">Send</button>
+      <i class="fa fa-spinner fa-spin" *ngIf="wait"></i>
+    </form>
+  </div>
+</section>

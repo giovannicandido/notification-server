@@ -16,10 +16,14 @@
       "mobile": false,
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/bootstrap3-dialog/dist/css/bootstrap-dialog.css",
+        "../node_modules/font-awesome/css/font-awesome.css",
         "styles.css"
       ],
       "scripts": [
-        "../node_modules/bootstrap/dist/js/bootstrap.js"
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.js",
+        "../node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
