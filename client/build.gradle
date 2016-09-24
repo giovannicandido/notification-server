@@ -31,5 +31,14 @@ task npmBuildProd(dependsOn: npmInstall, type: NpmTask) {
   args = ['run', 'build.prod']
 }
 
+task testJS(type: NpmTask) {
+  inputs.dir "src"
+  inputs.file "packages.json"
+  outputs.dir "dist"
+  args = ['run', 'test']
+}
+
+test.dependsOn testJS
+
 jar.dependsOn npmBuildProd
 
