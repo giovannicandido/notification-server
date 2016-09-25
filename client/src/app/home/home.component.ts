@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private http: Http) { }
 
   ngOnInit() {
-    this.repeat = setInterval(()=>this.loadCurrentSending(), 500);
+    this.repeat = setInterval(()=>this.loadCurrentSending(), 1000);
   }
 
   ngOnDestroy(): void {

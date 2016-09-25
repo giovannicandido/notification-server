@@ -48,6 +48,7 @@ public class Counter {
         private final int currentSendingCount;
         private final int totalSendedCount;
         private final int totalFailedCount;
+        private int threadPoolActiveCount;
 
         public Total(int currentSendingCount, int totalSendedCount, int totalFailedCount) {
             this.currentSendingCount = currentSendingCount;
@@ -65,6 +66,14 @@ public class Counter {
 
         public int getTotalFailedCount() {
             return totalFailedCount;
+        }
+
+        public int getThreadPoolActiveCount() {
+            return threadPoolActiveCount;
+        }
+
+        public void setThreadPoolActiveCount(int threadPoolActiveCount) {
+            this.threadPoolActiveCount = threadPoolActiveCount;
         }
 
         @Override

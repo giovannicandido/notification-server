@@ -22,11 +22,13 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Servico principal
@@ -42,6 +44,8 @@ public class NotificationService implements NotificationServiceInterface {
     private Notification notification;
     @Autowired
     private Counter counter;
+    @Autowired
+    private ThreadPoolTaskExecutor poolExecutor;
 
     public NotificationService(Notification notification) {
         this.notification = notification;
@@ -91,7 +95,9 @@ public class NotificationService implements NotificationServiceInterface {
 
     @RequestMapping(value = "/currentSending", method = RequestMethod.GET)
     public Counter.Total getCurrentSendedValue(){
-        return counter.getTotal();
+        Counter.Total total = counter.getTotal();
+        total.setThreadPoolActiveCount(poolExecutor.getThreadPoolExecutor().getQueue().size());
+        return total;
     }
 
 }

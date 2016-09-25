@@ -1,6 +1,7 @@
 package info.atende.nserver.config;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -17,8 +18,9 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class AsyncConfiguration extends AsyncConfigurationProperties implements AsyncConfigurer {
 
+    @Bean
     @Override
-    public Executor getAsyncExecutor() {
+    public ThreadPoolTaskExecutor getAsyncExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(getCorePoolSize());
         taskExecutor.setMaxPoolSize(getMaxPoolSize());
