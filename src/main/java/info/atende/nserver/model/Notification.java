@@ -62,11 +62,8 @@ public class Notification {
 
         MimeMessage message = mailSender.createMimeMessage();
         try {
-            if(from == null || from.trim().equals("")) {
-                message.setFrom(new InternetAddress(this.from));
-            } else {
-                message.setFrom(new InternetAddress(from));
-            }
+            from = getFrom(from);
+            message.setFrom(new InternetAddress(from));
             InternetAddress[] address = new InternetAddress[to.length];
 
             for (int i = 0; i < to.length; i++) {
@@ -110,6 +107,13 @@ public class Notification {
 
     }
 
+    private String getFrom(String from){
+        if(from == null || from.trim().equals("")) {
+            return this.from;
+        } else {
+            return from;
+        }
+    }
     private String getToAddressString(String[] to) {
         StringBuilder format = new StringBuilder();
         for(String s : to){

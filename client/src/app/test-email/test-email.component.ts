@@ -23,11 +23,11 @@ export class TestEmailComponent implements OnInit {
       .map(_ => _.json())
       .catch(this.handleError)
       .subscribe(r => {
-      BootstrapDialog.alert({
-        title: 'Message',
-        message: r.json().message
-      })
-      this.done()
+        BootstrapDialog.alert({
+          title: 'Message',
+          message: r.message
+        })
+        this.done()
     })
   }
 
@@ -41,6 +41,7 @@ export class TestEmailComponent implements OnInit {
   }
 
   handleError(error, caught) {
+    console.info("Handle error");
     $('button[type=submit]').prop('disabled', false);
     BootstrapDialog.alert({
 
