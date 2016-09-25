@@ -1,1 +1,7 @@
-<h2>Notification Server</h2>
+<section>
+  <h2>Notification Server</h2>
+  <p>Current Sending: {{total.currentSendingCount}}</p>
+  <p>Sended: {{total.totalSendedCount}}</p>
+  <p>Failed: {{total.totalFailedCount}}</p>
+  <button class="btn btn-default" (click)="loadCurrentSending()">Reload</button>
+</section>

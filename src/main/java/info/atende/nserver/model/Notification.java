@@ -46,6 +46,9 @@ public class Notification {
 
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private Counter counter;
+
     @Value("${mail.from}")
     private String from;
 
@@ -59,14 +62,11 @@ public class Notification {
      */
     @Async
     public Future<Boolean> sendEmail(String[] to, String from, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
-
-        MimeMessage message = mailSender.createMimeMessage();
+        counter.incrementCurrentValue();
         try {
-            if(from == null || from.trim().equals("")) {
-                message.setFrom(new InternetAddress(this.from));
-            } else {
-                message.setFrom(new InternetAddress(from));
-            }
+            MimeMessage message = mailSender.createMimeMessage();
+            from = getFrom(from);
+            message.setFrom(new InternetAddress(from));
             InternetAddress[] address = new InternetAddress[to.length];
 
             for (int i = 0; i < to.length; i++) {
@@ -99,17 +99,28 @@ public class Notification {
             message.setContent(multipart);
             mailSender.send(message);
             logger.info("Email enviado: " + "from " + from + " to " + getToAddressString(to) + " subject: " + subject);
+            counter.incrementTotalSended();
             return new AsyncResult<>(true);
 
         } catch (Exception ex) {
+            counter.incrementFailed();
             String messageEx = "Não foi possível enviar email: " + ex.getMessage();
             logger.error(messageEx);
             throw new EmailNotSendedException(messageEx);
 
+        } finally {
+            counter.decrementCurrentValue();
         }
 
     }
 
+    private String getFrom(String from){
+        if(from == null || from.trim().equals("")) {
+            return this.from;
+        } else {
+            return from;
+        }
+    }
     private String getToAddressString(String[] to) {
         StringBuilder format = new StringBuilder();
         for(String s : to){

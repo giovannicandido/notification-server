@@ -15,6 +15,7 @@ package info.atende.nserver.service;
 import info.atende.nserver.config.logging.Logging;
 import info.atende.nserver.dto.RestResponse;
 import info.atende.nserver.exceptions.EmailNotSendedException;
+import info.atende.nserver.model.Counter;
 import info.atende.nserver.model.MailMimeType;
 import info.atende.nserver.model.Notification;
 import org.hibernate.validator.constraints.Email;
@@ -39,6 +40,8 @@ public class NotificationService implements NotificationServiceInterface {
 
     @Autowired
     private Notification notification;
+    @Autowired
+    private Counter counter;
 
     public NotificationService(Notification notification) {
         this.notification = notification;
@@ -68,6 +71,7 @@ public class NotificationService implements NotificationServiceInterface {
         return ResponseEntity.ok("Sended Email");
 
     }
+
     @RequestMapping(value = "/test-email", method = RequestMethod.POST)
     public RestResponse sendEmailTest(@Email @NotBlank @RequestBody String to, HttpServletRequest hsr) throws EmailNotSendedException, ExecutionException, InterruptedException {
         String[] toArray = {to};
@@ -83,6 +87,11 @@ public class NotificationService implements NotificationServiceInterface {
             return new RestResponse(ex.getMessage(), false);
         }
 
+    }
+
+    @RequestMapping(value = "/currentSending", method = RequestMethod.GET)
+    public Counter.Total getCurrentSendedValue(){
+        return counter.getTotal();
     }
 
 }
