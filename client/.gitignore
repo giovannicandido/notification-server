@@ -12,3 +12,4 @@ build/reports
 coverage
 test/e2e/dist
 npm-debug.log
+build/
