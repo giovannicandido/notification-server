@@ -11,3 +11,5 @@ src/main/resources/keycloak-dev.json
 src/test/resources/application-test.properties
 src/main/resource/application-dev.properties
 src/main/resource/application-test.properties
+.wercker/
+

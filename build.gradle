@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    // Spring
+    runtime(project(':client'))
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-mail')
     compile('org.springframework.boot:spring-boot-starter-web')
@@ -86,25 +86,17 @@ idea {
     }
 }
 
+
+idea {
+    module {
+        excludeDirs += file('.wercker')
+    }
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
 }
 
-task buildJs(type: Exec){
-    workingDir 'src/main/webapp'
-    commandLine 'gulp', 'build-prod'
-}
-
-task unbundleJs(type: Exec){
-    workingDir 'src/main/webapp'
-    commandLine 'gulp', 'unbundle'
-}
-
-task copyWebapp(type: Copy, dependsOn: buildJs){
-    from 'src/main/webapp'
-    into 'build/resources/main/static'
-    exclude 'node_modules/**'
-}
 
 task checkKeycloakProdFileExists() {
     def file = new File('src/main/resources/keycloak-prod.json')
@@ -113,6 +105,6 @@ task checkKeycloakProdFileExists() {
     }
 }
 
-jar.dependsOn([checkKeycloakProdFileExists,copyWebapp])
+jar.dependsOn([checkKeycloakProdFileExists])
 
 

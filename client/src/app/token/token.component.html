@@ -1,0 +1,26 @@
+<section class="au-animate">
+  <h2>Tokens</h2>
+  <div>
+    <form role="form" (submit)="save()">
+      <input name="token" placeholder="Application" type="text" required [(ngModel)]="token.application">
+      <button class="btn btn-default" type="submit">Generate</button>
+    </form>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <td>Application</td>
+      <td>Token</td>
+      <td>Date Created</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let t of tokens">
+      <td>{{t.application}}</td>
+      <td>{{t.token}}</td>
+      <td>{{t.dateCreated}}</td>
+      <td><a (click)="delete(t.token)">Delete</a></td>
+    </tr>
+    </tbody>
+  </table>
+</section>

@@ -15,17 +15,26 @@ package info.atende.nserver.service;
 import info.atende.nserver.config.logging.Logging;
 import info.atende.nserver.dto.RestResponse;
 import info.atende.nserver.exceptions.EmailNotSendedException;
+import info.atende.nserver.model.Counter;
 import info.atende.nserver.model.MailMimeType;
 import info.atende.nserver.model.Notification;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
+=======
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+<<<<<<< HEAD
+=======
+import java.util.concurrent.ThreadPoolExecutor;
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
 
 /**
  * Servico principal
@@ -37,6 +46,7 @@ import java.util.concurrent.Future;
 public class NotificationService implements NotificationServiceInterface {
 
 
+<<<<<<< HEAD
     @Autowired
     private Notification notification;
 
@@ -44,6 +54,19 @@ public class NotificationService implements NotificationServiceInterface {
         this.notification = notification;
     }
 
+=======
+    @Autowired
+    private Notification notification;
+    @Autowired
+    private Counter counter;
+    @Autowired
+    private ThreadPoolTaskExecutor poolExecutor;
+
+    public NotificationService(Notification notification) {
+        this.notification = notification;
+    }
+
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
     public NotificationService() {
     }
 
@@ -68,6 +91,7 @@ public class NotificationService implements NotificationServiceInterface {
         return ResponseEntity.ok("Sended Email");
 
     }
+
     @RequestMapping(value = "/test-email", method = RequestMethod.POST)
     public RestResponse sendEmailTest(@Email @NotBlank @RequestBody String to, HttpServletRequest hsr) throws EmailNotSendedException, ExecutionException, InterruptedException {
         String[] toArray = {to};
@@ -84,5 +108,15 @@ public class NotificationService implements NotificationServiceInterface {
         }
 
     }
+<<<<<<< HEAD
+=======
+
+    @RequestMapping(value = "/currentSending", method = RequestMethod.GET)
+    public Counter.Total getCurrentSendedValue(){
+        Counter.Total total = counter.getTotal();
+        total.setThreadPoolActiveCount(poolExecutor.getThreadPoolExecutor().getQueue().size());
+        return total;
+    }
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
 
 }

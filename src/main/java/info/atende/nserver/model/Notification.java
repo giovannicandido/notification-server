@@ -46,6 +46,12 @@ public class Notification {
 
     @Autowired
     private JavaMailSender mailSender;
+<<<<<<< HEAD
+=======
+    @Autowired
+    private Counter counter;
+
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
     @Value("${mail.from}")
     private String from;
 
@@ -59,6 +65,7 @@ public class Notification {
      */
     @Async
     public Future<Boolean> sendEmail(String[] to, String from, String subject, String body, MailMimeType mailMimeType) throws EmailNotSendedException {
+<<<<<<< HEAD
 
         MimeMessage message = mailSender.createMimeMessage();
         try {
@@ -67,6 +74,13 @@ public class Notification {
             } else {
                 message.setFrom(new InternetAddress(from));
             }
+=======
+        counter.incrementCurrentValue();
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            from = getFrom(from);
+            message.setFrom(new InternetAddress(from));
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
             InternetAddress[] address = new InternetAddress[to.length];
 
             for (int i = 0; i < to.length; i++) {
@@ -99,17 +113,40 @@ public class Notification {
             message.setContent(multipart);
             mailSender.send(message);
             logger.info("Email enviado: " + "from " + from + " to " + getToAddressString(to) + " subject: " + subject);
+<<<<<<< HEAD
             return new AsyncResult<>(true);
 
         } catch (Exception ex) {
+=======
+            counter.incrementTotalSended();
+            return new AsyncResult<>(true);
+
+        } catch (Exception ex) {
+            counter.incrementFailed();
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
             String messageEx = "Não foi possível enviar email: " + ex.getMessage();
             logger.error(messageEx);
             throw new EmailNotSendedException(messageEx);
 
+<<<<<<< HEAD
+=======
+        } finally {
+            counter.decrementCurrentValue();
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
         }
 
     }
 
+<<<<<<< HEAD
+=======
+    private String getFrom(String from){
+        if(from == null || from.trim().equals("")) {
+            return this.from;
+        } else {
+            return from;
+        }
+    }
+>>>>>>> bb944d5c17eea1a014b83cb3e7a924aa191089c6
     private String getToAddressString(String[] to) {
         StringBuilder format = new StringBuilder();
         for(String s : to){
