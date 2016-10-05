@@ -3,10 +3,10 @@ params.datasource.username=giovanni
 params.datasource.password=1234
 keycloak.configurationFile:classpath:/keycloak-dev.json
 
-mail.from=giovanni@pucminas.br
+mail.from=
 spring.mail.host=smtp.office365.com
-spring.mail.username=634451@pucminas.br
-spring.mail.password=lckh%0254
+spring.mail.username=
+spring.mail.password=
 spring.mail.port=587
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
